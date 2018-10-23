@@ -1,7 +1,9 @@
+plugins {
+    id 'java'
+}
+
 group 'pt.isel.ngspipes'
 version '1.0-SNAPSHOT'
-
-apply plugin: 'java'
 
 sourceCompatibility = 1.8
 
@@ -10,5 +12,29 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.5.3.RELEASE'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.5.3.RELEASE'
+
+    compile group: 'org.springframework.security', name: 'spring-security-core', version: '4.2.4.RELEASE'
+    compile group: 'org.springframework.security', name: 'spring-security-web', version: '4.2.4.RELEASE'
+    compile group: 'org.springframework.security', name: 'spring-security-config', version: '4.2.4.RELEASE'
+    compile group: 'org.springframework', name: 'spring-tx', version: '4.3.18.RELEASE'
+    compile group: 'org.springframework', name: 'spring-orm', version: '4.3.18.RELEASE'
+
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.0'
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.0'
+
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.1.0.Final'
+
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.0'
+
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.5'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.5'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.5'
+    compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.9.5'
+    compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.9.5'
+
+    compile project(":share_core")
+    compile project(":share_dynamic_repository")
+    compile project(":share_publish_repository")
 }
