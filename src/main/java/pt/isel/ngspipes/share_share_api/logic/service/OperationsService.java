@@ -109,6 +109,8 @@ public class OperationsService implements IOperationsService {
 
         for(Group group : groupService.getGroupsOfUser(userName))
             deleteGroup(group.getGroupName());
+
+        userService.delete(userName);
     }
 
     @Override
