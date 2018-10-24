@@ -36,4 +36,7 @@ public interface IGroupController {
     @RequestMapping(value = Routes.CHANGE_GROUP_IMAGE_ROUTE, method = RequestMethod.POST)
     ResponseEntity<Void> changeImage(@PathVariable String groupName, @RequestPart(value = "file") MultipartFile file) throws Exception;
 
+    @RequestMapping(value = Routes.GET_GROUPS_NAMES_ROUTE, method = RequestMethod.GET)
+    ResponseEntity<Collection<String>> getGroupsNames() throws Exception;
+
 }

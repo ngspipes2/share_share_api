@@ -123,6 +123,16 @@ public class GroupController implements IGroupController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<Collection<String>> getGroupsNames() throws Exception {
+        if(!isValidAccess(null, Access.Operation.GET))
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
+        Collection<String> names = groupService.getGroupsNames();
+
+        return new ResponseEntity<>(names, HttpStatus.OK);
+    }
+
     private boolean isValidAccess(String groupName, Access.Operation operation) throws ServiceException {
         Access<String> access = new Access<>(getCurrentUserName(), operation, groupName);
         return permissionService.isValidAccess(access);

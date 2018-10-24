@@ -127,6 +127,16 @@ public class UserController implements IUserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<Collection<String>> getUsersNames() throws Exception {
+        if(!isValidAccess(null, Access.Operation.GET))
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
+        Collection<String> names = userService.getUsersNames();
+
+        return new ResponseEntity<>(names, HttpStatus.OK);
+    }
+
     private boolean isValidAccess(String userName, Access.Operation operation) throws ServiceException  {
         Access<String> access = new Access<>(getCurrentUserName(), operation, userName);
         return permissionService.isValidAccess(access);

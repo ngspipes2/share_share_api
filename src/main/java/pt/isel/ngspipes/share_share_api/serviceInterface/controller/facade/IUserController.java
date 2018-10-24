@@ -43,4 +43,7 @@ public interface IUserController {
     @RequestMapping(value = Routes.CHANGE_USER_PASSWORD_ROUTE, method = RequestMethod.POST)
     ResponseEntity<Void> changePassword(@PathVariable String userName, @RequestBody PasswordData data) throws Exception;
 
+    @RequestMapping(value = Routes.GET_USERS_NAMES_ROUTE, method = RequestMethod.GET)
+    ResponseEntity<Collection<String>> getUsersNames() throws Exception;
+
 }
