@@ -118,6 +118,16 @@ public class UserController implements IUserController {
     }
 
     @Override
+    public ResponseEntity<Void> deleteImage(@PathVariable String userName) throws Exception {
+        if(!isValidAccess(userName, Access.Operation.UPDATE))
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
+        userService.setUserImage(userName, null);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Void> changePassword(@PathVariable String userName, @RequestBody PasswordData data) throws Exception {
         if(!isValidAccess(userName, Access.Operation.UPDATE))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

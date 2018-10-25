@@ -48,6 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers(Routes.CHANGE_USER_PASSWORD_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
             .antMatchers(Routes.GET_USER_IMAGE_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
             .antMatchers(Routes.CHANGE_USER_IMAGE_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
+            .antMatchers(Routes.DELETE_USER_IMAGE_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
             .antMatchers(Routes.GET_USERS_NAMES_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
 
             .antMatchers(Routes.GET_ALL_GROUPS_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
@@ -57,6 +58,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers(Routes.DELETE_GROUP_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
             .antMatchers(Routes.GET_GROUP_IMAGE_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
             .antMatchers(Routes.CHANGE_GROUP_IMAGE_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
+            .antMatchers(Routes.DELETE_GROUP_IMAGE_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
             .antMatchers(Routes.GET_GROUPS_NAMES_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
 
             .antMatchers(Routes.GET_ALL_GROUP_MEMBERS_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())

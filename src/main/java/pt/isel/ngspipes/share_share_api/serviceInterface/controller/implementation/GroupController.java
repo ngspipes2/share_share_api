@@ -124,6 +124,16 @@ public class GroupController implements IGroupController {
     }
 
     @Override
+    public ResponseEntity<Void> deleteImage(@PathVariable String groupName) throws Exception {
+        if(!isValidAccess(groupName, Access.Operation.UPDATE))
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
+        groupService.setGroupImage(groupName, null);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Collection<String>> getGroupsNames() throws Exception {
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

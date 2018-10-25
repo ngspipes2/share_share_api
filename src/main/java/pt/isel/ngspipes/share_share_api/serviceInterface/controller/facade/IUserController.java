@@ -40,6 +40,9 @@ public interface IUserController {
     @RequestMapping(value = Routes.CHANGE_USER_IMAGE_ROUTE, method = RequestMethod.POST)
     ResponseEntity<Void> changeImage(@PathVariable String userName, @RequestPart(value = "file") MultipartFile file) throws Exception;
 
+    @RequestMapping(value = Routes.DELETE_USER_IMAGE_ROUTE, method = RequestMethod.DELETE)
+    ResponseEntity<Void> deleteImage(@PathVariable String userName) throws Exception;
+
     @RequestMapping(value = Routes.CHANGE_USER_PASSWORD_ROUTE, method = RequestMethod.POST)
     ResponseEntity<Void> changePassword(@PathVariable String userName, @RequestBody PasswordData data) throws Exception;
 

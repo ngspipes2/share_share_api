@@ -14,6 +14,7 @@ public class Routes {
     public static final String DELETE_USER_ROUTE = USERS_ROUTE + "/{userName}";
     public static final String GET_USER_IMAGE_ROUTE = USERS_ROUTE + "/{userName}/image";
     public static final String CHANGE_USER_IMAGE_ROUTE = USERS_ROUTE + "/{userName}/image";
+    public static final String DELETE_USER_IMAGE_ROUTE = USERS_ROUTE + "/{userName}/image";
     public static final String CHANGE_USER_PASSWORD_ROUTE = USERS_ROUTE + "/{userName}/password";
     public static final String GET_USERS_NAMES_ROUTE = "/usersnames";
 
@@ -26,6 +27,7 @@ public class Routes {
     public static final String DELETE_GROUP_ROUTE = GROUPS_ROUTE + "/{groupName}";
     public static final String GET_GROUP_IMAGE_ROUTE = GROUPS_ROUTE + "/{groupName}/image";
     public static final String CHANGE_GROUP_IMAGE_ROUTE = GROUPS_ROUTE + "/{groupName}/image";
+    public static final String DELETE_GROUP_IMAGE_ROUTE = GROUPS_ROUTE + "/{groupName}/image";
     public static final String GET_GROUPS_NAMES_ROUTE = "/groupsnames";
 
 
