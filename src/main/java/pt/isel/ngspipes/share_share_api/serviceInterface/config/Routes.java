@@ -2,6 +2,9 @@ package pt.isel.ngspipes.share_share_api.serviceInterface.config;
 
 public class Routes {
 
+    public static final String LOGIN_ROUTE = "/login";
+
+
     public static final String USERS_ROUTE = "/users";
 
     public static final String GET_ALL_USERS_ROUTE = USERS_ROUTE;
@@ -13,7 +16,6 @@ public class Routes {
     public static final String CHANGE_USER_IMAGE_ROUTE = USERS_ROUTE + "/{userName}/image";
     public static final String CHANGE_USER_PASSWORD_ROUTE = USERS_ROUTE + "/{userName}/password";
     public static final String GET_USERS_NAMES_ROUTE = "/usersnames";
-
 
     public static final String GROUPS_ROUTE = "/groups";
 

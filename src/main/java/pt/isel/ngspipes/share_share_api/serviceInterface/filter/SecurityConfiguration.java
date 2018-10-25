@@ -38,6 +38,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
             .antMatchers(HttpMethod.OPTIONS).permitAll()
 
+            .antMatchers(Routes.LOGIN_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
+
             .antMatchers(HttpMethod.GET, Routes.GET_ALL_USERS_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
             .antMatchers(Routes.GET_USER_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
             .antMatchers(HttpMethod.POST, Routes.CREATE_USER_ROUTE).permitAll()
