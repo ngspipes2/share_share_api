@@ -1,5 +1,6 @@
 package pt.isel.ngspipes.share_share_api.serviceInterface.controller.implementation;
 
+import pt.isel.ngspipes.share_core.logic.domain.AccessToken;
 import pt.isel.ngspipes.share_core.logic.domain.Group;
 import pt.isel.ngspipes.share_core.logic.domain.GroupMember;
 import pt.isel.ngspipes.share_core.logic.domain.User;
@@ -11,6 +12,16 @@ import pt.isel.ngspipes.share_publish_repository.logic.domain.PublishedRepositor
 import java.util.Collection;
 
 public class ControllerUtils {
+
+    public static void hidePasswordsOfAccessTokens(Collection<AccessToken> tokens) {
+        tokens.forEach(ControllerUtils::hidePasswordOfAccessToken);
+    }
+
+    public static void hidePasswordOfAccessToken(AccessToken token) {
+        token.getOwner().setPassword("");
+        token.setToken("");
+    }
+
 
     public static void hidePasswordsOfPublishedRepositories(Collection<PublishedRepository> repositories) {
         repositories.forEach(ControllerUtils::hidePasswordOfPublishedRepository);

@@ -5,13 +5,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pt.isel.ngspipes.share_core.logic.domain.AccessToken;
+import pt.isel.ngspipes.share_core.logic.domain.User;
+import pt.isel.ngspipes.share_core.logic.service.ICurrentUserSupplier;
 import pt.isel.ngspipes.share_core.logic.service.accessToken.IAccessTokenService;
 import pt.isel.ngspipes.share_core.logic.service.exceptions.ServiceException;
 import pt.isel.ngspipes.share_core.logic.service.permission.Access;
 import pt.isel.ngspipes.share_core.logic.service.permission.IPermissionService;
 import pt.isel.ngspipes.share_share_api.serviceInterface.controller.facade.IAccessTokenController;
+
+import java.util.Collection;
 
 @RestController
 public class AccessTokenController implements IAccessTokenController {
@@ -20,6 +25,8 @@ public class AccessTokenController implements IAccessTokenController {
     private IAccessTokenService accessTokenService;
     @Autowired
     private IPermissionService<AccessToken, Integer> permissionService;
+    @Autowired
+    private ICurrentUserSupplier currentUserSupplier;
 
 
 
@@ -41,6 +48,18 @@ public class AccessTokenController implements IAccessTokenController {
         accessTokenService.delete(tokenId);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Collection<AccessToken>> getAccessTokensOfUser(@RequestParam String userName) throws Exception {
+        if(!userName.equals(getCurrentUserName()) && !currentUserSupplier.get().getRole().equals(User.Role.ADMIN))
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
+        Collection<AccessToken> tokens = accessTokenService.getTokensOfUser(userName);
+
+        ControllerUtils.hidePasswordsOfAccessTokens(tokens);
+
+        return new ResponseEntity<>(tokens, HttpStatus.OK);
     }
 
     private boolean isValidAccess(Integer tokenId, Access.Operation operation) throws ServiceException {

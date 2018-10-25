@@ -65,6 +65,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
             .antMatchers(Routes.CREATE_ACCESS_TOKEN_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
             .antMatchers(Routes.DELETE_ACCESS_TOKEN_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
+            .antMatchers(Routes.GET_ACCESS_TOKENS_OF_USER).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
 
             .antMatchers(Routes.GET_ALL_INTERNAL_REPOSITORIES_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
             .antMatchers(Routes.GET_INTERNAL_REPOSITORY_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
