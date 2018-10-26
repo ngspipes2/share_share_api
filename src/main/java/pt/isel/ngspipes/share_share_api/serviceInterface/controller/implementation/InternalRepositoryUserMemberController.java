@@ -13,6 +13,7 @@ import pt.isel.ngspipes.share_core.logic.service.permission.Access;
 import pt.isel.ngspipes.share_core.logic.service.permission.IPermissionService;
 import pt.isel.ngspipes.share_dynamic_repository.logic.domain.RepositoryUserMember;
 import pt.isel.ngspipes.share_dynamic_repository.logic.service.repositoryUserMember.IRepositoryUserMemberService;
+import pt.isel.ngspipes.share_share_api.logic.service.IOperationsService;
 import pt.isel.ngspipes.share_share_api.serviceInterface.controller.facade.IInternalRepositoryUserMemberController;
 
 import java.util.Collection;
@@ -24,6 +25,8 @@ public class InternalRepositoryUserMemberController implements IInternalReposito
     private IRepositoryUserMemberService repositoryUserMemberService;
     @Autowired
     private IPermissionService<RepositoryUserMember, Integer> permissionService;
+    @Autowired
+    private IOperationsService operationsService;
 
 
 
@@ -79,7 +82,7 @@ public class InternalRepositoryUserMemberController implements IInternalReposito
         if(!isValidAccess(memberId, Access.Operation.DELETE))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        repositoryUserMemberService.delete(memberId);
+        operationsService.deleteInternalRepositoryUserMember(memberId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -13,11 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 import pt.isel.ngspipes.share_core.logic.domain.Group;
 import pt.isel.ngspipes.share_core.logic.domain.User;
 import pt.isel.ngspipes.share_core.logic.service.accessToken.IAccessTokenService;
+import pt.isel.ngspipes.share_core.logic.service.exceptions.NonExistentEntityException;
 import pt.isel.ngspipes.share_core.logic.service.exceptions.ServiceException;
 import pt.isel.ngspipes.share_core.logic.service.group.IGroupService;
 import pt.isel.ngspipes.share_core.logic.service.groupMember.IGroupMemberService;
 import pt.isel.ngspipes.share_core.logic.service.user.IUserService;
 import pt.isel.ngspipes.share_dynamic_repository.logic.domain.RepositoryMetadata;
+import pt.isel.ngspipes.share_dynamic_repository.logic.domain.RepositoryUserMember;
 import pt.isel.ngspipes.share_dynamic_repository.logic.service.repositoryGroupMember.IRepositoryGroupMemberService;
 import pt.isel.ngspipes.share_dynamic_repository.logic.service.repositoryMetadata.IRepositoryMetadataService;
 import pt.isel.ngspipes.share_dynamic_repository.logic.service.repositoryUserMember.IRepositoryUserMemberService;
@@ -127,6 +129,34 @@ public class OperationsService implements IOperationsService {
         repositoryUserMemberService.deleteMembersOfRepository(repositoryId);
         repositoryGroupMemberService.deleteMembersOfRepository(repositoryId);
         repositoryMetadataService.delete(repositoryId);
+    }
+
+    @Override
+    @Transactional
+    public void createInternalRepository(RepositoryMetadata repository) throws ServiceException {
+        repositoryMetadataService.insert(repository);
+
+        RepositoryUserMember member = new RepositoryUserMember();
+        member.setRepository(repository);
+        member.setUser(repository.getOwner());
+        member.setWriteAccess(true);
+
+        repositoryUserMemberService.insert(member);
+    }
+
+    @Override
+    @Transactional
+    public void deleteInternalRepositoryUserMember(int memberId) throws ServiceException {
+        RepositoryUserMember member = repositoryUserMemberService.getById(memberId);
+
+        if(member == null)
+            throw new NonExistentEntityException("Non existent User Member with id:" + memberId);
+
+        RepositoryMetadata repository = member.getRepository();
+        if(repository.getOwner().getUserName().equals(member.getUser().getUserName()))
+            throw new ServiceException("User Member representing owner of repository cannot be deleted!");
+
+        repositoryUserMemberService.delete(memberId);
     }
 
 }

@@ -59,7 +59,7 @@ public class InternalRepositoryController implements IInternalRepositoryControll
         if(!isValidAccess(null, Access.Operation.INSERT))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        repositoryService.insert(repository);
+        operationsService.createInternalRepository(repository);
 
         return new ResponseEntity<>(repository.getId(), HttpStatus.CREATED);
     }
