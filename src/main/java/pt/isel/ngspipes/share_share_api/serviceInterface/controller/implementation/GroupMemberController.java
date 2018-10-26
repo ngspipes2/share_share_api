@@ -13,6 +13,7 @@ import pt.isel.ngspipes.share_core.logic.service.exceptions.ServiceException;
 import pt.isel.ngspipes.share_core.logic.service.groupMember.IGroupMemberService;
 import pt.isel.ngspipes.share_core.logic.service.permission.Access;
 import pt.isel.ngspipes.share_core.logic.service.permission.IPermissionService;
+import pt.isel.ngspipes.share_share_api.logic.service.IOperationsService;
 import pt.isel.ngspipes.share_share_api.serviceInterface.controller.facade.IGroupMemberController;
 
 import java.util.Collection;
@@ -24,6 +25,8 @@ public class GroupMemberController implements IGroupMemberController {
     private IGroupMemberService groupMemberService;
     @Autowired
     private IPermissionService<GroupMember, Integer> permissionService;
+    @Autowired
+    private IOperationsService operationsService;
 
 
 
@@ -79,7 +82,7 @@ public class GroupMemberController implements IGroupMemberController {
         if(!isValidAccess(memberId, Access.Operation.DELETE))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        groupMemberService.delete(memberId);
+        operationsService.deleteGroupMember(memberId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

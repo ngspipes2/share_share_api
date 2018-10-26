@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pt.isel.ngspipes.share_core.logic.domain.Group;
+import pt.isel.ngspipes.share_core.logic.domain.GroupMember;
 import pt.isel.ngspipes.share_core.logic.domain.User;
 import pt.isel.ngspipes.share_core.logic.service.accessToken.IAccessTokenService;
 import pt.isel.ngspipes.share_core.logic.service.exceptions.NonExistentEntityException;
@@ -157,6 +158,34 @@ public class OperationsService implements IOperationsService {
             throw new ServiceException("User Member representing owner of repository cannot be deleted!");
 
         repositoryUserMemberService.delete(memberId);
+    }
+
+    @Override
+    @Transactional
+    public void createGroup(Group group) throws ServiceException {
+        groupService.insert(group);
+
+        GroupMember member = new GroupMember();
+        member.setGroup(group);
+        member.setUser(group.getOwner());
+        member.setWriteAccess(true);
+
+        groupMemberService.insert(member);
+    }
+
+    @Override
+    @Transactional
+    public void deleteGroupMember(int memberId) throws ServiceException {
+        GroupMember member = groupMemberService.getById(memberId);
+
+        if(member == null)
+            throw new NonExistentEntityException("Non existent Group Member with id:" + memberId);
+
+        Group group = member.getGroup();
+        if(group.getOwner().getUserName().equals(member.getUser().getUserName()))
+            throw new ServiceException("Group Member representing owner of group cannot be deleted!");
+
+        groupMemberService.delete(memberId);
     }
 
 }

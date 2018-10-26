@@ -59,7 +59,7 @@ public class GroupController implements IGroupController {
         if(!isValidAccess(null, Access.Operation.INSERT))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        groupService.insert(group);
+        operationsService.createGroup(group);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
