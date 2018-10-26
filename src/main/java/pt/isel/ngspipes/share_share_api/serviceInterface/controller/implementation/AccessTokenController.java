@@ -41,6 +41,16 @@ public class AccessTokenController implements IAccessTokenController {
     }
 
     @Override
+    public ResponseEntity<Void> update(Integer tokenId, AccessToken token) throws Exception {
+        if(!isValidAccess(tokenId, Access.Operation.UPDATE))
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
+        accessTokenService.update(token);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Void> delete(@RequestBody Integer tokenId) throws Exception {
         if(!isValidAccess(tokenId, Access.Operation.DELETE))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

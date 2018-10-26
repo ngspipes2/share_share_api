@@ -14,6 +14,9 @@ public interface IAccessTokenController {
     @RequestMapping(value = Routes.CREATE_ACCESS_TOKEN_ROUTE, method = RequestMethod.POST)
     ResponseEntity<String> insert(@RequestBody AccessToken token) throws Exception;
 
+    @RequestMapping(value = Routes.UPDATE_ACCESS_TOKEN_ROUTE, method = RequestMethod.PUT)
+    ResponseEntity<Void> update(@PathVariable Integer tokenId, @RequestBody AccessToken token) throws Exception;
+
     @RequestMapping(value = Routes.DELETE_ACCESS_TOKEN_ROUTE, method = RequestMethod.DELETE)
     ResponseEntity<Void> delete(@RequestBody Integer tokenId) throws Exception;
 
