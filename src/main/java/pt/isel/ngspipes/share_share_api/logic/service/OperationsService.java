@@ -26,8 +26,10 @@ import pt.isel.ngspipes.share_dynamic_repository.logic.service.repositoryMetadat
 import pt.isel.ngspipes.share_dynamic_repository.logic.service.repositoryUserMember.IRepositoryUserMemberService;
 import pt.isel.ngspipes.share_publish_repository.logic.service.publishedRepository.IPublishedRepositoryService;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OperationsService implements IOperationsService {
@@ -186,6 +188,38 @@ public class OperationsService implements IOperationsService {
             throw new ServiceException("Group Member representing owner of group cannot be deleted!");
 
         groupMemberService.delete(memberId);
+    }
+
+    @Override
+    @Transactional
+    public Collection<Group> getGroupsAccessibleByUser(String userName) throws ServiceException {
+        Collection<Group> groups = new LinkedList<>();
+
+        Collection<Group> ownerOf = groupService.getGroupsOfUser(userName);
+        Collection<Group> memberOf = groupMemberService.getMembersWithUser(userName)
+                .stream()
+                .map(GroupMember::getGroup)
+                .collect(Collectors.toList());
+
+        groups.addAll(ownerOf);
+        groups.addAll(memberOf);
+
+        return removeDuplicates(groups);
+    }
+
+    private Collection<Group> removeDuplicates(Collection<Group> groups) {
+        Collection<String> seen = new LinkedList<>();
+
+        return groups
+            .stream()
+            .filter((group) -> {
+                if(seen.contains(group.getGroupName()))
+                    return false;
+
+                seen.add(group.getGroupName());
+                return true;
+            })
+            .collect(Collectors.toList());
     }
 
 }

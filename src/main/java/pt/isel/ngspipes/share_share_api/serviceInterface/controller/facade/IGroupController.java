@@ -42,4 +42,7 @@ public interface IGroupController {
     @RequestMapping(value = Routes.GET_GROUPS_NAMES_ROUTE, method = RequestMethod.GET)
     ResponseEntity<Collection<String>> getGroupsNames() throws Exception;
 
+    @RequestMapping(value = Routes.GET_ALL_GROUPS_ROUTE, method = RequestMethod.GET, params = "accessibleBy")
+    ResponseEntity<Collection<Group>> getGroupsAccessibleByUser(@RequestParam String accessibleBy) throws Exception;
+
 }

@@ -143,6 +143,18 @@ public class GroupController implements IGroupController {
         return new ResponseEntity<>(names, HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<Collection<Group>> getGroupsAccessibleByUser(@RequestParam String accessibleBy) throws Exception {
+        if(!isValidAccess(null, Access.Operation.GET))
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
+        Collection<Group> groups = operationsService.getGroupsAccessibleByUser(accessibleBy);
+
+        ControllerUtils.hidePasswordsOfGroups(groups);
+
+        return new ResponseEntity<>(groups, HttpStatus.OK);
+    }
+
     private boolean isValidAccess(String groupName, Access.Operation operation) throws ServiceException {
         Access<String> access = new Access<>(getCurrentUserName(), operation, groupName);
         return permissionService.isValidAccess(access);

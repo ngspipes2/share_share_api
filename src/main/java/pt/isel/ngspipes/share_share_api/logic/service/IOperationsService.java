@@ -6,6 +6,8 @@ import pt.isel.ngspipes.share_core.logic.domain.User;
 import pt.isel.ngspipes.share_core.logic.service.exceptions.ServiceException;
 import pt.isel.ngspipes.share_dynamic_repository.logic.domain.RepositoryMetadata;
 
+import java.util.Collection;
+
 @Service
 public interface IOperationsService {
 
@@ -24,5 +26,7 @@ public interface IOperationsService {
     void createGroup(Group group) throws ServiceException;
 
     void deleteGroupMember(int memberId) throws ServiceException;
+
+    Collection<Group> getGroupsAccessibleByUser(String userName) throws ServiceException;
 
 }
