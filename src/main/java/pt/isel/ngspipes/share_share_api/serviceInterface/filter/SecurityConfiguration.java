@@ -77,6 +77,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers(Routes.CREATE_INTERNAL_REPOSITORY_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
             .antMatchers(Routes.UPDATE_INTERNAL_REPOSITORY_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
             .antMatchers(Routes.DELETE_INTERNAL_REPOSITORY_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
+            .antMatchers(Routes.GET_INTERNAL_REPOSITORIES_NAMES_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
 
             .antMatchers(Routes.GET_ALL_INTERNAL_REPOSITORY_GROUP_MEMBERS_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
             .antMatchers(Routes.GET_INTERNAL_REPOSITORY_GROUP_MEMBER_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
@@ -95,6 +96,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers(Routes.CREATE_EXTERNAL_REPOSITORY_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
             .antMatchers(Routes.UPDATE_EXTERNAL_REPOSITORY_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
             .antMatchers(Routes.DELETE_EXTERNAL_REPOSITORY_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
+            .antMatchers(Routes.GET_EXTERNAL_REPOSITORIES_NAMES_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
 
             .and().httpBasic()
             .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

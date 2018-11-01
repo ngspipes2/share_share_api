@@ -29,4 +29,7 @@ public interface IExternalRepositoryController {
     @RequestMapping(value = Routes.GET_ALL_EXTERNAL_REPOSITORIES_ROUTE, method = RequestMethod.GET, params = "userName")
     ResponseEntity<Collection<PublishedRepository>> getRepositoriesOfUser(@RequestParam String userName) throws Exception;
 
+    @RequestMapping(value = Routes.GET_EXTERNAL_REPOSITORIES_NAMES_ROUTE, method = RequestMethod.GET)
+    ResponseEntity<Collection<String>> getRepositoriesNames() throws Exception;
+
 }

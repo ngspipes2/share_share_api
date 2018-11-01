@@ -99,6 +99,16 @@ public class InternalRepositoryController implements IInternalRepositoryControll
         return new ResponseEntity<>(repositories, HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<Collection<String>> getRepositoriesNames() throws Exception {
+        if(!isValidAccess(null, Access.Operation.GET))
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
+        Collection<String> repositoriesNames = repositoryService.getRepositoriesNames();
+
+        return new ResponseEntity<>(repositoriesNames, HttpStatus.OK);
+    }
+
     private boolean isValidAccess(String repositoryName, Access.Operation operation) throws ServiceException {
         Access<String> access = new Access<>(getCurrentUserName(), operation, repositoryName);
         return permissionService.isValidAccess(access);

@@ -29,4 +29,7 @@ public interface IInternalRepositoryController {
     @RequestMapping(value = Routes.GET_ALL_INTERNAL_REPOSITORIES_ROUTE, method = RequestMethod.GET, params = "userName")
     ResponseEntity<Collection<RepositoryMetadata>> getRepositoriesOfUser(@RequestParam String userName) throws Exception;
 
+    @RequestMapping(value = Routes.GET_INTERNAL_REPOSITORIES_NAMES_ROUTE, method = RequestMethod.GET)
+    ResponseEntity<Collection<String>> getRepositoriesNames() throws Exception;
+
 }
