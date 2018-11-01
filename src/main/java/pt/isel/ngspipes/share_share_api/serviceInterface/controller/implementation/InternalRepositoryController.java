@@ -24,7 +24,7 @@ public class InternalRepositoryController implements IInternalRepositoryControll
     @Autowired
     private IRepositoryMetadataService repositoryService;
     @Autowired
-    private IPermissionService<RepositoryMetadata, Integer> permissionService;
+    private IPermissionService<RepositoryMetadata, String> permissionService;
     @Autowired
     private IOperationsService operationsService;
 
@@ -43,11 +43,11 @@ public class InternalRepositoryController implements IInternalRepositoryControll
     }
 
     @Override
-    public ResponseEntity<RepositoryMetadata> get(@PathVariable Integer repositoryId) throws Exception {
-        if(!isValidAccess(repositoryId, Access.Operation.GET))
+    public ResponseEntity<RepositoryMetadata> get(@PathVariable String repositoryName) throws Exception {
+        if(!isValidAccess(repositoryName, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        RepositoryMetadata repository = repositoryService.getById(repositoryId);
+        RepositoryMetadata repository = repositoryService.getById(repositoryName);
 
         ControllerUtils.hidePasswordOfRepositoryMetadata(repository);
 
@@ -55,21 +55,21 @@ public class InternalRepositoryController implements IInternalRepositoryControll
     }
 
     @Override
-    public ResponseEntity<Integer> insert(@RequestBody RepositoryMetadata repository) throws Exception {
+    public ResponseEntity<Void> insert(@RequestBody RepositoryMetadata repository) throws Exception {
         if(!isValidAccess(null, Access.Operation.INSERT))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
         operationsService.createInternalRepository(repository);
 
-        return new ResponseEntity<>(repository.getId(), HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<Void> update(@PathVariable Integer repositoryId, @RequestBody RepositoryMetadata repository) throws Exception {
-        if(!isValidAccess(repositoryId, Access.Operation.UPDATE))
+    public ResponseEntity<Void> update(@PathVariable String repositoryName, @RequestBody RepositoryMetadata repository) throws Exception {
+        if(!isValidAccess(repositoryName, Access.Operation.UPDATE))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        if(!repositoryId.equals(repository.getId()))
+        if(!repositoryName.equals(repository.getRepositoryName()))
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         repositoryService.update(repository);
@@ -78,11 +78,11 @@ public class InternalRepositoryController implements IInternalRepositoryControll
     }
 
     @Override
-    public ResponseEntity<Void> delete(@PathVariable Integer repositoryId) throws Exception {
-        if(!isValidAccess(repositoryId, Access.Operation.DELETE))
+    public ResponseEntity<Void> delete(@PathVariable String repositoryName) throws Exception {
+        if(!isValidAccess(repositoryName, Access.Operation.DELETE))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        operationsService.deleteInternalRepository(repositoryId);
+        operationsService.deleteInternalRepository(repositoryName);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -99,8 +99,8 @@ public class InternalRepositoryController implements IInternalRepositoryControll
         return new ResponseEntity<>(repositories, HttpStatus.OK);
     }
 
-    private boolean isValidAccess(Integer repositoryId, Access.Operation operation) throws ServiceException {
-        Access<Integer> access = new Access<>(getCurrentUserName(), operation, repositoryId);
+    private boolean isValidAccess(String repositoryName, Access.Operation operation) throws ServiceException {
+        Access<String> access = new Access<>(getCurrentUserName(), operation, repositoryName);
         return permissionService.isValidAccess(access);
     }
 

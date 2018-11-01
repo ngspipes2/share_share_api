@@ -26,8 +26,8 @@ public interface IInternalRepositoryGroupMemberController {
     @RequestMapping(value = Routes.DELETE_INTERNAL_REPOSITORY_GROUP_MEMBER_ROUTE, method = RequestMethod.DELETE)
     ResponseEntity<Void> delete(@PathVariable Integer memberId) throws Exception;
 
-    @RequestMapping(value = Routes.GET_ALL_INTERNAL_REPOSITORY_GROUP_MEMBERS_ROUTE, method = RequestMethod.GET, params = "repositoryId")
-    ResponseEntity<Collection<RepositoryGroupMember>> getMembersOfRepository(@RequestParam Integer repositoryId) throws Exception;
+    @RequestMapping(value = Routes.GET_ALL_INTERNAL_REPOSITORY_GROUP_MEMBERS_ROUTE, method = RequestMethod.GET, params = "repositoryName")
+    ResponseEntity<Collection<RepositoryGroupMember>> getMembersOfRepository(@RequestParam String repositoryName) throws Exception;
 
     @RequestMapping(value = Routes.GET_ALL_INTERNAL_REPOSITORY_GROUP_MEMBERS_ROUTE, method = RequestMethod.GET, params = "groupName")
     ResponseEntity<Collection<RepositoryGroupMember>> getMembersWithGroup(@RequestParam String groupName) throws Exception;

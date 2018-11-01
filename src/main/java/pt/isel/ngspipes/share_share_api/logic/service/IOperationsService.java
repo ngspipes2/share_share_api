@@ -17,7 +17,7 @@ public interface IOperationsService {
 
     void deleteGroup(String groupName) throws ServiceException;
 
-    void deleteInternalRepository(int repositoryId) throws ServiceException;
+    void deleteInternalRepository(String repositoryName) throws ServiceException;
 
     void createInternalRepository(RepositoryMetadata repository) throws ServiceException;
 

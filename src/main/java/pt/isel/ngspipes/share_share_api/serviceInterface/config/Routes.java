@@ -51,10 +51,10 @@ public class Routes {
     public static final String INTERNAL_REPOSITORIES_ROUTE = "/internalrepositories";
 
     public static final String GET_ALL_INTERNAL_REPOSITORIES_ROUTE = INTERNAL_REPOSITORIES_ROUTE;
-    public static final String GET_INTERNAL_REPOSITORY_ROUTE = INTERNAL_REPOSITORIES_ROUTE + "/{repositoryId}";
+    public static final String GET_INTERNAL_REPOSITORY_ROUTE = INTERNAL_REPOSITORIES_ROUTE + "/{repositoryName}";
     public static final String CREATE_INTERNAL_REPOSITORY_ROUTE = INTERNAL_REPOSITORIES_ROUTE;
-    public static final String UPDATE_INTERNAL_REPOSITORY_ROUTE = INTERNAL_REPOSITORIES_ROUTE + "/{repositoryId}";
-    public static final String DELETE_INTERNAL_REPOSITORY_ROUTE = INTERNAL_REPOSITORIES_ROUTE + "/{repositoryId}";
+    public static final String UPDATE_INTERNAL_REPOSITORY_ROUTE = INTERNAL_REPOSITORIES_ROUTE + "/{repositoryName}";
+    public static final String DELETE_INTERNAL_REPOSITORY_ROUTE = INTERNAL_REPOSITORIES_ROUTE + "/{repositoryName}";
 
 
     public static final String INTERNAL_REPOSITORY_GROUP_MEMBERS_ROUTE = "/internalrepositorygroupmembers";
@@ -78,9 +78,9 @@ public class Routes {
     public static final String EXTERNAL_REPOSITORIES_ROUTE = "/externalrepositories";
 
     public static final String GET_ALL_EXTERNAL_REPOSITORIES_ROUTE = EXTERNAL_REPOSITORIES_ROUTE;
-    public static final String GET_EXTERNAL_REPOSITORY_ROUTE = EXTERNAL_REPOSITORIES_ROUTE + "/{repositoryId}";
+    public static final String GET_EXTERNAL_REPOSITORY_ROUTE = EXTERNAL_REPOSITORIES_ROUTE + "/{repositoryName}";
     public static final String CREATE_EXTERNAL_REPOSITORY_ROUTE = EXTERNAL_REPOSITORIES_ROUTE;
-    public static final String UPDATE_EXTERNAL_REPOSITORY_ROUTE = EXTERNAL_REPOSITORIES_ROUTE + "/{repositoryId}";
-    public static final String DELETE_EXTERNAL_REPOSITORY_ROUTE = EXTERNAL_REPOSITORIES_ROUTE + "/{repositoryId}";
+    public static final String UPDATE_EXTERNAL_REPOSITORY_ROUTE = EXTERNAL_REPOSITORIES_ROUTE + "/{repositoryName}";
+    public static final String DELETE_EXTERNAL_REPOSITORY_ROUTE = EXTERNAL_REPOSITORIES_ROUTE + "/{repositoryName}";
 
 }

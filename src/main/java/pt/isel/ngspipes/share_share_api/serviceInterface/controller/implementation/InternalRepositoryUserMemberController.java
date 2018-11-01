@@ -88,11 +88,11 @@ public class InternalRepositoryUserMemberController implements IInternalReposito
     }
 
     @Override
-    public ResponseEntity<Collection<RepositoryUserMember>> getMembersOfRepository(@RequestParam Integer repositoryId) throws Exception {
+    public ResponseEntity<Collection<RepositoryUserMember>> getMembersOfRepository(@RequestParam String repositoryName) throws Exception {
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<RepositoryUserMember> members = repositoryUserMemberService.getMembersOfRepository(repositoryId);
+        Collection<RepositoryUserMember> members = repositoryUserMemberService.getMembersOfRepository(repositoryName);
 
         ControllerUtils.hidePasswordsOfRepositoryUserMembers(members);
 

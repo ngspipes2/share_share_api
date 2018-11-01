@@ -34,6 +34,11 @@ import java.util.stream.Collectors;
 @Service
 public class OperationsService implements IOperationsService {
 
+    private static final String TOOLS_REPOSITORY_KEY = "Tools";
+    private static final String PIPELINES_REPOSITORY_KEY = "Pipelines";
+
+
+
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
@@ -84,9 +89,9 @@ public class OperationsService implements IOperationsService {
     private void createDefaultToolsRepository(User user) throws ServiceException {
         RepositoryMetadata repository = new RepositoryMetadata();
 
+        repository.setRepositoryName(user.getUserName() + "_" + TOOLS_REPOSITORY_KEY);
         repository.setType(RepositoryMetadata.Type.TOOLS);
         repository.setOwner(user);
-        repository.setName("Default Tools Repository");
         repository.setPublic(true);
 
         repositoryMetadataService.insert(repository);
@@ -95,9 +100,9 @@ public class OperationsService implements IOperationsService {
     private void createDefaultPipelinesRepository(User user) throws ServiceException {
         RepositoryMetadata repository = new RepositoryMetadata();
 
+        repository.setRepositoryName(user.getUserName() + "_" + PIPELINES_REPOSITORY_KEY);
         repository.setType(RepositoryMetadata.Type.PIPELINES);
         repository.setOwner(user);
-        repository.setName("Default Pipelines Repository");
         repository.setPublic(true);
 
         repositoryMetadataService.insert(repository);
@@ -128,10 +133,10 @@ public class OperationsService implements IOperationsService {
 
     @Override
     @Transactional
-    public void deleteInternalRepository(int repositoryId) throws ServiceException {
-        repositoryUserMemberService.deleteMembersOfRepository(repositoryId);
-        repositoryGroupMemberService.deleteMembersOfRepository(repositoryId);
-        repositoryMetadataService.delete(repositoryId);
+    public void deleteInternalRepository(String repositoryName) throws ServiceException {
+        repositoryUserMemberService.deleteMembersOfRepository(repositoryName);
+        repositoryGroupMemberService.deleteMembersOfRepository(repositoryName);
+        repositoryMetadataService.delete(repositoryName);
     }
 
     @Override
