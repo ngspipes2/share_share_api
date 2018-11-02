@@ -12,8 +12,7 @@ import pt.isel.ngspipes.share_core.logic.service.exceptions.ServiceException;
 import pt.isel.ngspipes.share_core.logic.service.permission.Access;
 import pt.isel.ngspipes.share_core.logic.service.permission.IPermissionService;
 import pt.isel.ngspipes.share_dynamic_repository.logic.domain.RepositoryMetadata;
-import pt.isel.ngspipes.share_dynamic_repository.logic.service.repositoryMetadata.IRepositoryMetadataService;
-import pt.isel.ngspipes.share_share_api.logic.service.IOperationsService;
+import pt.isel.ngspipes.share_share_api.logic.operation.internalRepository.IInternalRepositoryOperation;
 import pt.isel.ngspipes.share_share_api.serviceInterface.controller.facade.IInternalRepositoryController;
 
 import java.util.Collection;
@@ -22,11 +21,9 @@ import java.util.Collection;
 public class InternalRepositoryController implements IInternalRepositoryController {
 
     @Autowired
-    private IRepositoryMetadataService repositoryService;
+    private IInternalRepositoryOperation internalRepositoryOperation;
     @Autowired
     private IPermissionService<RepositoryMetadata, String> permissionService;
-    @Autowired
-    private IOperationsService operationsService;
 
 
 
@@ -35,7 +32,7 @@ public class InternalRepositoryController implements IInternalRepositoryControll
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<RepositoryMetadata> repositories = repositoryService.getAll();
+        Collection<RepositoryMetadata> repositories = internalRepositoryOperation.getAllRepositories();
 
         ControllerUtils.hidePasswordsOfRepositoriesMetadata(repositories);
 
@@ -47,7 +44,7 @@ public class InternalRepositoryController implements IInternalRepositoryControll
         if(!isValidAccess(repositoryName, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        RepositoryMetadata repository = repositoryService.getById(repositoryName);
+        RepositoryMetadata repository = internalRepositoryOperation.getRepository(repositoryName);
 
         ControllerUtils.hidePasswordOfRepositoryMetadata(repository);
 
@@ -59,7 +56,7 @@ public class InternalRepositoryController implements IInternalRepositoryControll
         if(!isValidAccess(null, Access.Operation.INSERT))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        operationsService.createInternalRepository(repository);
+        internalRepositoryOperation.createRepository(repository);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -72,7 +69,7 @@ public class InternalRepositoryController implements IInternalRepositoryControll
         if(!repositoryName.equals(repository.getRepositoryName()))
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        repositoryService.update(repository);
+        internalRepositoryOperation.updateRepository(repository);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -82,7 +79,7 @@ public class InternalRepositoryController implements IInternalRepositoryControll
         if(!isValidAccess(repositoryName, Access.Operation.DELETE))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        operationsService.deleteInternalRepository(repositoryName);
+        internalRepositoryOperation.deleteRepository(repositoryName);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -92,7 +89,7 @@ public class InternalRepositoryController implements IInternalRepositoryControll
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<RepositoryMetadata> repositories = repositoryService.getRepositoriesOfUser(userName);
+        Collection<RepositoryMetadata> repositories = internalRepositoryOperation.getRepositoriesOfUser(userName);
 
         ControllerUtils.hidePasswordsOfRepositoriesMetadata(repositories);
 
@@ -104,7 +101,7 @@ public class InternalRepositoryController implements IInternalRepositoryControll
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<String> repositoriesNames = repositoryService.getRepositoriesNames();
+        Collection<String> repositoriesNames = internalRepositoryOperation.getRepositoriesNames();
 
         return new ResponseEntity<>(repositoriesNames, HttpStatus.OK);
     }

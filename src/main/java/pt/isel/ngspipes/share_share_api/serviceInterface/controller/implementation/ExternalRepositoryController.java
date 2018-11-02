@@ -12,7 +12,7 @@ import pt.isel.ngspipes.share_core.logic.service.exceptions.ServiceException;
 import pt.isel.ngspipes.share_core.logic.service.permission.Access;
 import pt.isel.ngspipes.share_core.logic.service.permission.IPermissionService;
 import pt.isel.ngspipes.share_publish_repository.logic.domain.PublishedRepository;
-import pt.isel.ngspipes.share_publish_repository.logic.service.publishedRepository.IPublishedRepositoryService;
+import pt.isel.ngspipes.share_share_api.logic.operation.externalRepository.IExternalRepositoryOperation;
 import pt.isel.ngspipes.share_share_api.serviceInterface.controller.facade.IExternalRepositoryController;
 
 import java.util.Collection;
@@ -21,7 +21,7 @@ import java.util.Collection;
 public class ExternalRepositoryController implements IExternalRepositoryController {
 
     @Autowired
-    private IPublishedRepositoryService publishedRepositoryService;
+    private IExternalRepositoryOperation publishedRepositoryOperation;
     @Autowired
     private IPermissionService<PublishedRepository, String> permissionService;
 
@@ -32,7 +32,7 @@ public class ExternalRepositoryController implements IExternalRepositoryControll
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<PublishedRepository> repositories = publishedRepositoryService.getAll();
+        Collection<PublishedRepository> repositories = publishedRepositoryOperation.getAllRepositories();
 
         ControllerUtils.hidePasswordsOfPublishedRepositories(repositories);
 
@@ -44,7 +44,7 @@ public class ExternalRepositoryController implements IExternalRepositoryControll
         if(!isValidAccess(repositoryName, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        PublishedRepository repository = publishedRepositoryService.getById(repositoryName);
+        PublishedRepository repository = publishedRepositoryOperation.getRepository(repositoryName);
 
         ControllerUtils.hidePasswordOfPublishedRepository(repository);
 
@@ -56,7 +56,7 @@ public class ExternalRepositoryController implements IExternalRepositoryControll
         if(!isValidAccess(null, Access.Operation.INSERT))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        publishedRepositoryService.insert(repository);
+        publishedRepositoryOperation.createRepository(repository);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -69,7 +69,7 @@ public class ExternalRepositoryController implements IExternalRepositoryControll
         if(!repositoryName.equals(repository.getRepositoryName()))
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        publishedRepositoryService.update(repository);
+        publishedRepositoryOperation.updateRepository(repository);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -79,7 +79,7 @@ public class ExternalRepositoryController implements IExternalRepositoryControll
         if(!isValidAccess(repositoryName, Access.Operation.DELETE))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        publishedRepositoryService.delete(repositoryName);
+        publishedRepositoryOperation.deleteRepositoriesOfUser(repositoryName);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -89,7 +89,7 @@ public class ExternalRepositoryController implements IExternalRepositoryControll
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<PublishedRepository> repositories = publishedRepositoryService.getRepositoriesOfUser(userName);
+        Collection<PublishedRepository> repositories = publishedRepositoryOperation.getRepositoriesOfUser(userName);
 
         ControllerUtils.hidePasswordsOfPublishedRepositories(repositories);
 
@@ -101,7 +101,7 @@ public class ExternalRepositoryController implements IExternalRepositoryControll
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<String> repositoriesNames = publishedRepositoryService.getRepositoriesNames();
+        Collection<String> repositoriesNames = publishedRepositoryOperation.getRepositoriesNames();
 
         return new ResponseEntity<>(repositoriesNames, HttpStatus.OK);
     }

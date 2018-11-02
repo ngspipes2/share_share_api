@@ -10,10 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 import pt.isel.ngspipes.share_core.logic.domain.Group;
 import pt.isel.ngspipes.share_core.logic.domain.Image;
 import pt.isel.ngspipes.share_core.logic.service.exceptions.ServiceException;
-import pt.isel.ngspipes.share_core.logic.service.group.IGroupService;
 import pt.isel.ngspipes.share_core.logic.service.permission.Access;
 import pt.isel.ngspipes.share_core.logic.service.permission.IPermissionService;
-import pt.isel.ngspipes.share_share_api.logic.service.IOperationsService;
+import pt.isel.ngspipes.share_share_api.logic.operation.group.IGroupOperation;
 import pt.isel.ngspipes.share_share_api.serviceInterface.controller.facade.IGroupController;
 
 import java.util.Collection;
@@ -22,11 +21,9 @@ import java.util.Collection;
 public class GroupController implements IGroupController {
 
     @Autowired
-    private IGroupService groupService;
+    private IGroupOperation groupOperation;
     @Autowired
     private IPermissionService<Group, String> permissionService;
-    @Autowired
-    private IOperationsService operationsService;
 
 
 
@@ -35,7 +32,7 @@ public class GroupController implements IGroupController {
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<Group> groups = groupService.getAll();
+        Collection<Group> groups = groupOperation.getAllGroups();
 
         ControllerUtils.hidePasswordsOfGroups(groups);
 
@@ -47,7 +44,7 @@ public class GroupController implements IGroupController {
         if(!isValidAccess(groupName, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Group group = groupService.getById(groupName);
+        Group group = groupOperation.getGroup(groupName);
 
         ControllerUtils.hidePasswordOfGroup(group);
 
@@ -59,7 +56,7 @@ public class GroupController implements IGroupController {
         if(!isValidAccess(null, Access.Operation.INSERT))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        operationsService.createGroup(group);
+        groupOperation.createGroup(group);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -72,7 +69,7 @@ public class GroupController implements IGroupController {
         if(!groupName.equals(group.getGroupName()))
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        groupService.update(group);
+        groupOperation.updateGroup(group);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -82,7 +79,7 @@ public class GroupController implements IGroupController {
         if(!isValidAccess(groupName, Access.Operation.DELETE))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        operationsService.deleteGroup(groupName);
+        groupOperation.deleteGroup(groupName);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -92,7 +89,7 @@ public class GroupController implements IGroupController {
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<Group> groups = groupService.getGroupsOfUser(userName);
+        Collection<Group> groups = groupOperation.getGroupsOfUser(userName);
 
         ControllerUtils.hidePasswordsOfGroups(groups);
 
@@ -104,7 +101,7 @@ public class GroupController implements IGroupController {
         if(!isValidAccess(groupName, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Image image = groupService.getGroupImage(groupName);
+        Image image = groupOperation.getGroupImage(groupName);
 
         return ResponseEntity
                 .ok()
@@ -118,7 +115,7 @@ public class GroupController implements IGroupController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
         Image image = new Image(null, file.getBytes());
-        groupService.setGroupImage(groupName, image);
+        groupOperation.setGroupImage(groupName, image);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -128,7 +125,7 @@ public class GroupController implements IGroupController {
         if(!isValidAccess(groupName, Access.Operation.UPDATE))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        groupService.setGroupImage(groupName, null);
+        groupOperation.setGroupImage(groupName, null);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -138,7 +135,7 @@ public class GroupController implements IGroupController {
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<String> names = groupService.getGroupsNames();
+        Collection<String> names = groupOperation.getGroupsNames();
 
         return new ResponseEntity<>(names, HttpStatus.OK);
     }
@@ -148,7 +145,7 @@ public class GroupController implements IGroupController {
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<Group> groups = operationsService.getGroupsAccessibleByUser(accessibleBy);
+        Collection<Group> groups = groupOperation.getGroupsAccessibleByUser(accessibleBy);
 
         ControllerUtils.hidePasswordsOfGroups(groups);
 

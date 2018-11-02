@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pt.isel.ngspipes.share_core.logic.domain.GroupMember;
 import pt.isel.ngspipes.share_core.logic.service.exceptions.ServiceException;
-import pt.isel.ngspipes.share_core.logic.service.groupMember.IGroupMemberService;
 import pt.isel.ngspipes.share_core.logic.service.permission.Access;
 import pt.isel.ngspipes.share_core.logic.service.permission.IPermissionService;
-import pt.isel.ngspipes.share_share_api.logic.service.IOperationsService;
+import pt.isel.ngspipes.share_share_api.logic.operation.groupMember.IGroupMemberOperation;
 import pt.isel.ngspipes.share_share_api.serviceInterface.controller.facade.IGroupMemberController;
 
 import java.util.Collection;
@@ -22,11 +21,9 @@ import java.util.Collection;
 public class GroupMemberController implements IGroupMemberController {
 
     @Autowired
-    private IGroupMemberService groupMemberService;
+    private IGroupMemberOperation groupMemberOperation;
     @Autowired
     private IPermissionService<GroupMember, Integer> permissionService;
-    @Autowired
-    private IOperationsService operationsService;
 
 
 
@@ -35,7 +32,7 @@ public class GroupMemberController implements IGroupMemberController {
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<GroupMember> members = groupMemberService.getAll();
+        Collection<GroupMember> members = groupMemberOperation.getAllMembers();
 
         ControllerUtils.hidePasswordsOfGroupMembers(members);
 
@@ -47,7 +44,7 @@ public class GroupMemberController implements IGroupMemberController {
         if(!isValidAccess(memberId, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        GroupMember member = groupMemberService.getById(memberId);
+        GroupMember member = groupMemberOperation.getMember(memberId);
 
         ControllerUtils.hidePasswordOfGroupMember(member);
 
@@ -59,7 +56,7 @@ public class GroupMemberController implements IGroupMemberController {
         if(!isValidAccess(null, Access.Operation.INSERT))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        groupMemberService.insert(member);
+        groupMemberOperation.createMember(member);
 
         return new ResponseEntity<>(member.getId(), HttpStatus.CREATED);
     }
@@ -72,7 +69,7 @@ public class GroupMemberController implements IGroupMemberController {
         if(!memberId.equals(member.getId()))
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        groupMemberService.update(member);
+        groupMemberOperation.updateMember(member);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -82,7 +79,7 @@ public class GroupMemberController implements IGroupMemberController {
         if(!isValidAccess(memberId, Access.Operation.DELETE))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        operationsService.deleteGroupMember(memberId);
+        groupMemberOperation.deleteMember(memberId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -92,7 +89,7 @@ public class GroupMemberController implements IGroupMemberController {
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<GroupMember> members = groupMemberService.getMembersOfGroup(groupName);
+        Collection<GroupMember> members = groupMemberOperation.getMembersOfGroup(groupName);
 
         ControllerUtils.hidePasswordsOfGroupMembers(members);
 
@@ -104,7 +101,7 @@ public class GroupMemberController implements IGroupMemberController {
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<GroupMember> members = groupMemberService.getMembersWithUser(userName);
+        Collection<GroupMember> members = groupMemberOperation.getMembersWithUser(userName);
 
         ControllerUtils.hidePasswordsOfGroupMembers(members);
 

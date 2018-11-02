@@ -15,8 +15,7 @@ import pt.isel.ngspipes.share_core.logic.domain.User;
 import pt.isel.ngspipes.share_core.logic.service.exceptions.ServiceException;
 import pt.isel.ngspipes.share_core.logic.service.permission.Access;
 import pt.isel.ngspipes.share_core.logic.service.permission.IPermissionService;
-import pt.isel.ngspipes.share_core.logic.service.user.IUserService;
-import pt.isel.ngspipes.share_share_api.logic.service.IOperationsService;
+import pt.isel.ngspipes.share_share_api.logic.operation.user.IUserOperation;
 import pt.isel.ngspipes.share_share_api.serviceInterface.controller.facade.IUserController;
 
 import java.util.Collection;
@@ -25,11 +24,9 @@ import java.util.Collection;
 public class UserController implements IUserController {
 
     @Autowired
-    private IUserService userService;
+    private IUserOperation userOperation;
     @Autowired
     private IPermissionService<User, String> permissionService;
-    @Autowired
-    private IOperationsService operationsService;
 
 
 
@@ -38,7 +35,7 @@ public class UserController implements IUserController {
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<User> users = userService.getAll();
+        Collection<User> users = userOperation.getAllUsers();
 
         ControllerUtils.hidePasswords(users);
 
@@ -50,7 +47,7 @@ public class UserController implements IUserController {
         if(!isValidAccess(userName, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        User user = userService.getById(userName);
+        User user = userOperation.getUser(userName);
 
         ControllerUtils.hidePassword(user);
 
@@ -65,7 +62,7 @@ public class UserController implements IUserController {
         if(user.getRole().equals(User.Role.ADMIN))
             throw new ServiceException("Create Admin user not allowed!");
 
-        operationsService.createUser(user);
+        userOperation.createUser(user);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -78,7 +75,7 @@ public class UserController implements IUserController {
         if(!userName.equals(user.getUserName()))
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        userService.update(user);
+        userOperation.updateUser(user);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -88,7 +85,7 @@ public class UserController implements IUserController {
         if(!isValidAccess(userName, Access.Operation.DELETE))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        operationsService.deleteUser(userName);
+        userOperation.deleteUser(userName);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -98,7 +95,7 @@ public class UserController implements IUserController {
         if(!isValidAccess(userName, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Image image = userService.getUserImage(userName);
+        Image image = userOperation.getUserImage(userName);
 
         return ResponseEntity
                 .ok()
@@ -112,7 +109,7 @@ public class UserController implements IUserController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
         Image image = new Image(null, file.getBytes());
-        userService.setUserImage(userName, image);
+        userOperation.setUserImage(userName, image);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -122,7 +119,7 @@ public class UserController implements IUserController {
         if(!isValidAccess(userName, Access.Operation.UPDATE))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        userService.setUserImage(userName, null);
+        userOperation.setUserImage(userName, null);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -132,7 +129,7 @@ public class UserController implements IUserController {
         if(!isValidAccess(userName, Access.Operation.UPDATE))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        userService.changePassword(userName, data.currentPassword, data.newPassword);
+        userOperation.changePassword(userName, data.currentPassword, data.newPassword);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -142,7 +139,7 @@ public class UserController implements IUserController {
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<String> names = userService.getUsersNames();
+        Collection<String> names = userOperation.getUsersNames();
 
         return new ResponseEntity<>(names, HttpStatus.OK);
     }

@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 import pt.isel.ngspipes.share_core.logic.domain.AccessToken;
 import pt.isel.ngspipes.share_core.logic.domain.User;
 import pt.isel.ngspipes.share_core.logic.service.ICurrentUserSupplier;
-import pt.isel.ngspipes.share_core.logic.service.accessToken.IAccessTokenService;
 import pt.isel.ngspipes.share_core.logic.service.exceptions.ServiceException;
 import pt.isel.ngspipes.share_core.logic.service.permission.Access;
 import pt.isel.ngspipes.share_core.logic.service.permission.IPermissionService;
+import pt.isel.ngspipes.share_share_api.logic.operation.accessToken.IAccessTokenOperation;
 import pt.isel.ngspipes.share_share_api.serviceInterface.controller.facade.IAccessTokenController;
 
 import java.util.Collection;
@@ -22,7 +22,7 @@ import java.util.Collection;
 public class AccessTokenController implements IAccessTokenController {
 
     @Autowired
-    private IAccessTokenService accessTokenService;
+    private IAccessTokenOperation accessTokenOperation;
     @Autowired
     private IPermissionService<AccessToken, Integer> permissionService;
     @Autowired
@@ -35,7 +35,7 @@ public class AccessTokenController implements IAccessTokenController {
         if(!isValidAccess(null, Access.Operation.INSERT))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        accessTokenService.insert(token);
+        accessTokenOperation.createToken(token);
 
         return new ResponseEntity<>(token.getToken(), HttpStatus.CREATED);
     }
@@ -45,7 +45,7 @@ public class AccessTokenController implements IAccessTokenController {
         if(!isValidAccess(tokenId, Access.Operation.UPDATE))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        accessTokenService.update(token);
+        accessTokenOperation.updateToken(token);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -55,7 +55,7 @@ public class AccessTokenController implements IAccessTokenController {
         if(!isValidAccess(tokenId, Access.Operation.DELETE))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        accessTokenService.delete(tokenId);
+        accessTokenOperation.deleteToken(tokenId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -65,7 +65,7 @@ public class AccessTokenController implements IAccessTokenController {
         if(!userName.equals(getCurrentUserName()) && !currentUserSupplier.get().getRole().equals(User.Role.ADMIN))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<AccessToken> tokens = accessTokenService.getTokensOfUser(userName);
+        Collection<AccessToken> tokens = accessTokenOperation.getTokensOfUser(userName);
 
         ControllerUtils.hidePasswordsOfAccessTokens(tokens);
 
