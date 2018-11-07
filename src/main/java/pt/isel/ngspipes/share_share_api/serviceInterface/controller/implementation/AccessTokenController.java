@@ -61,7 +61,7 @@ public class AccessTokenController implements IAccessTokenController {
     }
 
     @Override
-    public ResponseEntity<Void> update(@PathVariable Integer tokenId, AccessToken token) throws Exception {
+    public ResponseEntity<Void> update(@PathVariable Integer tokenId, @RequestBody AccessToken token) throws Exception {
         if(!isValidAccess(tokenId, Access.Operation.UPDATE))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
