@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,7 +56,7 @@ public class AccessTokenController implements IAccessTokenController {
     }
 
     @Override
-    public ResponseEntity<Void> delete(@RequestBody Integer tokenId) throws Exception {
+    public ResponseEntity<Void> delete(@PathVariable Integer tokenId) throws Exception {
         if(!isValidAccess(tokenId, Access.Operation.DELETE))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 

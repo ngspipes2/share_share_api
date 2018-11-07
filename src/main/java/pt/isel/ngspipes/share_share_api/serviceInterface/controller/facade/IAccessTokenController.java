@@ -25,7 +25,7 @@ public interface IAccessTokenController {
     ResponseEntity<Void> update(@PathVariable Integer tokenId, @RequestBody AccessToken token) throws Exception;
 
     @RequestMapping(value = Routes.DELETE_ACCESS_TOKEN_ROUTE, method = RequestMethod.DELETE)
-    ResponseEntity<Void> delete(@RequestBody Integer tokenId) throws Exception;
+    ResponseEntity<Void> delete(@PathVariable Integer tokenId) throws Exception;
 
     @RequestMapping(value = Routes.GET_ACCESS_TOKENS_OF_USER, method = RequestMethod.GET, params = "userName")
     ResponseEntity<Collection<AccessToken>> getAccessTokensOfUser(@RequestParam String userName) throws Exception;
