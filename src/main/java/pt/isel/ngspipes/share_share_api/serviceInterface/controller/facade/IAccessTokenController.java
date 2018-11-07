@@ -11,8 +11,15 @@ import java.util.Collection;
 @RestController
 public interface IAccessTokenController {
 
+    class NewAccessTokenData {
+        public int id;
+        public String token;
+    }
+
+
+
     @RequestMapping(value = Routes.CREATE_ACCESS_TOKEN_ROUTE, method = RequestMethod.POST)
-    ResponseEntity<String> insert(@RequestBody AccessToken token) throws Exception;
+    ResponseEntity<NewAccessTokenData> insert(@RequestBody AccessToken token) throws Exception;
 
     @RequestMapping(value = Routes.UPDATE_ACCESS_TOKEN_ROUTE, method = RequestMethod.PUT)
     ResponseEntity<Void> update(@PathVariable Integer tokenId, @RequestBody AccessToken token) throws Exception;

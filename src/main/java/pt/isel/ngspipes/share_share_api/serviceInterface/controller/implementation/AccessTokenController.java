@@ -31,13 +31,17 @@ public class AccessTokenController implements IAccessTokenController {
 
 
     @Override
-    public ResponseEntity<String> insert(@RequestBody AccessToken token) throws Exception {
+    public ResponseEntity<NewAccessTokenData> insert(@RequestBody AccessToken token) throws Exception {
         if(!isValidAccess(null, Access.Operation.INSERT))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
         accessTokenOperation.createToken(token);
 
-        return new ResponseEntity<>(token.getToken(), HttpStatus.CREATED);
+        NewAccessTokenData data = new NewAccessTokenData();
+        data.id = token.getId();
+        data.token = token.getToken();
+
+        return new ResponseEntity<>(data, HttpStatus.CREATED);
     }
 
     @Override
