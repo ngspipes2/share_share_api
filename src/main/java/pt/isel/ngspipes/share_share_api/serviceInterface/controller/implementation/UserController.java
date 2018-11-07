@@ -18,6 +18,7 @@ import pt.isel.ngspipes.share_core.logic.service.permission.IPermissionService;
 import pt.isel.ngspipes.share_share_api.logic.operation.user.IUserOperation;
 import pt.isel.ngspipes.share_share_api.serviceInterface.controller.facade.IUserController;
 
+import java.util.Base64;
 import java.util.Collection;
 
 @RestController
@@ -100,7 +101,7 @@ public class UserController implements IUserController {
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.IMAGE_JPEG)
-                .body(image == null ? null : image.getContent());
+                .body(image == null ? null : Base64.getEncoder().encode(image.getContent()));
     }
 
     @Override

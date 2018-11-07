@@ -15,6 +15,7 @@ import pt.isel.ngspipes.share_core.logic.service.permission.IPermissionService;
 import pt.isel.ngspipes.share_share_api.logic.operation.group.IGroupOperation;
 import pt.isel.ngspipes.share_share_api.serviceInterface.controller.facade.IGroupController;
 
+import java.util.Base64;
 import java.util.Collection;
 
 @RestController
@@ -106,7 +107,7 @@ public class GroupController implements IGroupController {
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.IMAGE_JPEG)
-                .body(image == null ? null : image.getContent());
+                .body(image == null ? null : Base64.getEncoder().encode(image.getContent()));
     }
 
     @Override
