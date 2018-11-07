@@ -32,6 +32,21 @@ public class AccessTokenController implements IAccessTokenController {
 
 
     @Override
+    public ResponseEntity<AccessToken> get(@PathVariable  Integer tokenId) throws Exception {
+        AccessToken token = accessTokenOperation.getToken(tokenId);
+
+        if(token == null)
+            return new ResponseEntity<>((AccessToken) null, HttpStatus.OK);
+
+        if(!token.getOwner().getUserName().equals(getCurrentUserName()))
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
+        ControllerUtils.hidePasswordOfAccessToken(token);
+
+        return new ResponseEntity<>(token, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<NewAccessTokenData> insert(@RequestBody AccessToken token) throws Exception {
         if(!isValidAccess(null, Access.Operation.INSERT))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -46,7 +61,7 @@ public class AccessTokenController implements IAccessTokenController {
     }
 
     @Override
-    public ResponseEntity<Void> update(Integer tokenId, AccessToken token) throws Exception {
+    public ResponseEntity<Void> update(@PathVariable Integer tokenId, AccessToken token) throws Exception {
         if(!isValidAccess(tokenId, Access.Operation.UPDATE))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 

@@ -42,6 +42,7 @@ public class Routes {
 
     public static final String ACCESS_TOKEN_ROUTE = "/tokens";
 
+    public static final String GET_ACCESS_TOKEN_ROUTE = ACCESS_TOKEN_ROUTE + "/{tokenId}";
     public static final String CREATE_ACCESS_TOKEN_ROUTE = ACCESS_TOKEN_ROUTE;
     public static final String UPDATE_ACCESS_TOKEN_ROUTE = ACCESS_TOKEN_ROUTE + "/{tokenId}";
     public static final String DELETE_ACCESS_TOKEN_ROUTE = ACCESS_TOKEN_ROUTE + "/{tokenId}";

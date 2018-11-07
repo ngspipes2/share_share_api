@@ -18,6 +18,9 @@ public interface IAccessTokenController {
 
 
 
+    @RequestMapping(value = Routes.GET_ACCESS_TOKEN_ROUTE, method = RequestMethod.GET)
+    ResponseEntity<AccessToken> get(@PathVariable Integer tokenId) throws Exception;
+
     @RequestMapping(value = Routes.CREATE_ACCESS_TOKEN_ROUTE, method = RequestMethod.POST)
     ResponseEntity<NewAccessTokenData> insert(@RequestBody AccessToken token) throws Exception;
 
