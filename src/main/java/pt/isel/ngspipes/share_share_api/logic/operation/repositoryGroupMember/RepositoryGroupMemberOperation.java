@@ -1,15 +1,15 @@
-package pt.isel.ngspipes.share_share_api.logic.operation.internalRepositoryGroupMember;
+package pt.isel.ngspipes.share_share_api.logic.operation.repositoryGroupMember;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pt.isel.ngspipes.share_core.logic.domain.RepositoryGroupMember;
 import pt.isel.ngspipes.share_core.logic.service.exceptions.ServiceException;
-import pt.isel.ngspipes.share_dynamic_repository.logic.domain.RepositoryGroupMember;
-import pt.isel.ngspipes.share_dynamic_repository.logic.service.repositoryGroupMember.IRepositoryGroupMemberService;
+import pt.isel.ngspipes.share_core.logic.service.repositoryGroupMember.IRepositoryGroupMemberService;
 
 import java.util.Collection;
 
 @Service
-public class InternalRepositoryGroupMemberOperation implements IInternalRepositoryGroupMemberOperation {
+public class RepositoryGroupMemberOperation implements IRepositoryGroupMemberOperation {
 
     @Autowired
     private IRepositoryGroupMemberService memberService;

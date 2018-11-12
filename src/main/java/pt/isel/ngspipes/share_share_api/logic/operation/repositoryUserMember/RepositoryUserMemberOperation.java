@@ -1,18 +1,18 @@
-package pt.isel.ngspipes.share_share_api.logic.operation.internalRepositoryUserMember;
+package pt.isel.ngspipes.share_share_api.logic.operation.repositoryUserMember;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pt.isel.ngspipes.share_core.logic.domain.RepositoryInfo;
+import pt.isel.ngspipes.share_core.logic.domain.RepositoryUserMember;
 import pt.isel.ngspipes.share_core.logic.service.exceptions.NonExistentEntityException;
 import pt.isel.ngspipes.share_core.logic.service.exceptions.ServiceException;
-import pt.isel.ngspipes.share_dynamic_repository.logic.domain.RepositoryMetadata;
-import pt.isel.ngspipes.share_dynamic_repository.logic.domain.RepositoryUserMember;
-import pt.isel.ngspipes.share_dynamic_repository.logic.service.repositoryUserMember.IRepositoryUserMemberService;
+import pt.isel.ngspipes.share_core.logic.service.repositoryUserMember.IRepositoryUserMemberService;
 
 import java.util.Collection;
 
 @Service
-public class InternalRepositoryUserMemberOperation implements IInternalRepositoryUserMemberOperation {
+public class RepositoryUserMemberOperation implements IRepositoryUserMemberOperation {
 
     @Autowired
     private IRepositoryUserMemberService memberService;
@@ -42,7 +42,7 @@ public class InternalRepositoryUserMemberOperation implements IInternalRepositor
         if(member == null)
             throw new NonExistentEntityException("Non existent User Member with id:" + id);
 
-        RepositoryMetadata repository = member.getRepository();
+        RepositoryInfo repository = member.getRepository();
         if(repository.getOwner().getUserName().equals(member.getUser().getUserName()))
             throw new ServiceException("User Member representing owner of repository cannot be deleted!");
 
@@ -75,7 +75,7 @@ public class InternalRepositoryUserMemberOperation implements IInternalRepositor
     }
 
     @Override
-    public RepositoryUserMember createMemberForOwner(RepositoryMetadata repository) throws ServiceException {
+    public RepositoryUserMember createMemberForOwner(RepositoryInfo repository) throws ServiceException {
         RepositoryUserMember member = new RepositoryUserMember();
         member.setRepository(repository);
         member.setUser(repository.getOwner());

@@ -8,20 +8,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pt.isel.ngspipes.share_core.logic.domain.RepositoryUserMember;
 import pt.isel.ngspipes.share_core.logic.service.exceptions.ServiceException;
 import pt.isel.ngspipes.share_core.logic.service.permission.Access;
 import pt.isel.ngspipes.share_core.logic.service.permission.IPermissionService;
-import pt.isel.ngspipes.share_dynamic_repository.logic.domain.RepositoryUserMember;
-import pt.isel.ngspipes.share_share_api.logic.operation.internalRepositoryUserMember.IInternalRepositoryUserMemberOperation;
-import pt.isel.ngspipes.share_share_api.serviceInterface.controller.facade.IInternalRepositoryUserMemberController;
+import pt.isel.ngspipes.share_share_api.logic.operation.repositoryUserMember.IRepositoryUserMemberOperation;
+import pt.isel.ngspipes.share_share_api.serviceInterface.controller.facade.IRepositoryUserMemberController;
 
 import java.util.Collection;
 
 @RestController
-public class InternalRepositoryUserMemberController implements IInternalRepositoryUserMemberController {
+public class RepositoryUserMemberController implements IRepositoryUserMemberController {
 
     @Autowired
-    private IInternalRepositoryUserMemberOperation internalRepositoryUserMemberOperation;
+    private IRepositoryUserMemberOperation repositoryUserMemberOperation;
     @Autowired
     private IPermissionService<RepositoryUserMember, Integer> permissionService;
 
@@ -32,7 +32,7 @@ public class InternalRepositoryUserMemberController implements IInternalReposito
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<RepositoryUserMember> members = internalRepositoryUserMemberOperation.getAllMembers();
+        Collection<RepositoryUserMember> members = repositoryUserMemberOperation.getAllMembers();
 
         ControllerUtils.hidePasswordsOfRepositoryUserMembers(members);
 
@@ -44,7 +44,7 @@ public class InternalRepositoryUserMemberController implements IInternalReposito
         if(!isValidAccess(memberId, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        RepositoryUserMember member = internalRepositoryUserMemberOperation.getMember(memberId);
+        RepositoryUserMember member = repositoryUserMemberOperation.getMember(memberId);
 
         ControllerUtils.hidePasswordOfRepositoryUserMember(member);
 
@@ -56,7 +56,7 @@ public class InternalRepositoryUserMemberController implements IInternalReposito
         if(!isValidAccess(null, Access.Operation.INSERT))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        internalRepositoryUserMemberOperation.createMember(member);
+        repositoryUserMemberOperation.createMember(member);
 
         return new ResponseEntity<>(member.getId(), HttpStatus.CREATED);
     }
@@ -69,7 +69,7 @@ public class InternalRepositoryUserMemberController implements IInternalReposito
         if(!memberId.equals(member.getId()))
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        internalRepositoryUserMemberOperation.updateMember(member);
+        repositoryUserMemberOperation.updateMember(member);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -79,7 +79,7 @@ public class InternalRepositoryUserMemberController implements IInternalReposito
         if(!isValidAccess(memberId, Access.Operation.DELETE))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        internalRepositoryUserMemberOperation.deleteMember(memberId);
+        repositoryUserMemberOperation.deleteMember(memberId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -89,7 +89,7 @@ public class InternalRepositoryUserMemberController implements IInternalReposito
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<RepositoryUserMember> members = internalRepositoryUserMemberOperation.getMembersOfRepository(repositoryName);
+        Collection<RepositoryUserMember> members = repositoryUserMemberOperation.getMembersOfRepository(repositoryName);
 
         ControllerUtils.hidePasswordsOfRepositoryUserMembers(members);
 
@@ -101,7 +101,7 @@ public class InternalRepositoryUserMemberController implements IInternalReposito
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<RepositoryUserMember> members = internalRepositoryUserMemberOperation.getMembersWithUser(userName);
+        Collection<RepositoryUserMember> members = repositoryUserMemberOperation.getMembersWithUser(userName);
 
         ControllerUtils.hidePasswordsOfRepositoryUserMembers(members);
 

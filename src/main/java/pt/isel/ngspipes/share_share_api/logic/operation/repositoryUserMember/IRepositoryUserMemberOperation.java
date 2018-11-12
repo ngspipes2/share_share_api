@@ -1,12 +1,12 @@
-package pt.isel.ngspipes.share_share_api.logic.operation.internalRepositoryUserMember;
+package pt.isel.ngspipes.share_share_api.logic.operation.repositoryUserMember;
 
+import pt.isel.ngspipes.share_core.logic.domain.RepositoryInfo;
+import pt.isel.ngspipes.share_core.logic.domain.RepositoryUserMember;
 import pt.isel.ngspipes.share_core.logic.service.exceptions.ServiceException;
-import pt.isel.ngspipes.share_dynamic_repository.logic.domain.RepositoryMetadata;
-import pt.isel.ngspipes.share_dynamic_repository.logic.domain.RepositoryUserMember;
 
 import java.util.Collection;
 
-public interface IInternalRepositoryUserMemberOperation {
+public interface IRepositoryUserMemberOperation {
 
     Collection<RepositoryUserMember> getAllMembers() throws ServiceException;
 
@@ -26,5 +26,6 @@ public interface IInternalRepositoryUserMemberOperation {
 
     void deleteMembersOfRepository(String repositoryName) throws ServiceException;
 
-    RepositoryUserMember createMemberForOwner(RepositoryMetadata repository) throws ServiceException;
+    RepositoryUserMember createMemberForOwner(RepositoryInfo repository) throws ServiceException;
+
 }

@@ -1,13 +1,6 @@
 package pt.isel.ngspipes.share_share_api.serviceInterface.controller.implementation;
 
-import pt.isel.ngspipes.share_core.logic.domain.AccessToken;
-import pt.isel.ngspipes.share_core.logic.domain.Group;
-import pt.isel.ngspipes.share_core.logic.domain.GroupMember;
-import pt.isel.ngspipes.share_core.logic.domain.User;
-import pt.isel.ngspipes.share_dynamic_repository.logic.domain.RepositoryGroupMember;
-import pt.isel.ngspipes.share_dynamic_repository.logic.domain.RepositoryMetadata;
-import pt.isel.ngspipes.share_dynamic_repository.logic.domain.RepositoryUserMember;
-import pt.isel.ngspipes.share_publish_repository.logic.domain.PublishedRepository;
+import pt.isel.ngspipes.share_core.logic.domain.*;
 
 import java.util.Collection;
 
@@ -23,24 +16,13 @@ public class ControllerUtils {
     }
 
 
-    public static void hidePasswordsOfPublishedRepositories(Collection<PublishedRepository> repositories) {
-        repositories.forEach(ControllerUtils::hidePasswordOfPublishedRepository);
-    }
-
-    public static void hidePasswordOfPublishedRepository(PublishedRepository repository) {
-        if(repository != null) {
-            hidePassword(repository.getPublisher());
-        }
-    }
-
-
     public static void hidePasswordsOfRepositoryGroupMembers(Collection<RepositoryGroupMember> members) {
         members.forEach(ControllerUtils::hidePasswordOfRepositoryGroupMember);
     }
 
     public static void hidePasswordOfRepositoryGroupMember(RepositoryGroupMember member) {
         if(member != null) {
-            hidePasswordOfRepositoryMetadata(member.getRepository());
+            hidePasswordOfRepositoryInfo(member.getRepository());
             hidePasswordOfGroup(member.getGroup());
         }
     }
@@ -52,17 +34,17 @@ public class ControllerUtils {
 
     public static void hidePasswordOfRepositoryUserMember(RepositoryUserMember member) {
         if(member != null) {
-            hidePasswordOfRepositoryMetadata(member.getRepository());
+            hidePasswordOfRepositoryInfo(member.getRepository());
             hidePassword(member.getUser());
         }
     }
 
 
-    public static void hidePasswordsOfRepositoriesMetadata(Collection<RepositoryMetadata> repositories) {
-        repositories.forEach(ControllerUtils::hidePasswordOfRepositoryMetadata);
+    public static void hidePasswordsOfRepositoriesInfo(Collection<RepositoryInfo> repositories) {
+        repositories.forEach(ControllerUtils::hidePasswordOfRepositoryInfo);
     }
 
-    public static void hidePasswordOfRepositoryMetadata(RepositoryMetadata repository) {
+    public static void hidePasswordOfRepositoryInfo(RepositoryInfo repository) {
         if(repository != null){
             hidePassword(repository.getOwner());
         }

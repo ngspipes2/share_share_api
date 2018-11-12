@@ -1,72 +1,71 @@
-package pt.isel.ngspipes.share_share_api.logic.operation.internalRepository;
+package pt.isel.ngspipes.share_share_api.logic.operation.repositoryInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pt.isel.ngspipes.share_core.logic.domain.RepositoryInfo;
 import pt.isel.ngspipes.share_core.logic.domain.User;
 import pt.isel.ngspipes.share_core.logic.service.exceptions.ServiceException;
-import pt.isel.ngspipes.share_dynamic_repository.logic.domain.RepositoryMetadata;
-import pt.isel.ngspipes.share_dynamic_repository.logic.service.repositoryGroupMember.IRepositoryGroupMemberService;
-import pt.isel.ngspipes.share_dynamic_repository.logic.service.repositoryMetadata.IRepositoryMetadataService;
-import pt.isel.ngspipes.share_dynamic_repository.logic.service.repositoryUserMember.IRepositoryUserMemberService;
-import pt.isel.ngspipes.share_share_api.logic.operation.internalRepositoryUserMember.IInternalRepositoryUserMemberOperation;
+import pt.isel.ngspipes.share_core.logic.service.repositoryGroupMember.IRepositoryGroupMemberService;
+import pt.isel.ngspipes.share_core.logic.service.repositoryInfo.IRepositoryInfoService;
+import pt.isel.ngspipes.share_core.logic.service.repositoryUserMember.IRepositoryUserMemberService;
+import pt.isel.ngspipes.share_share_api.logic.operation.repositoryUserMember.IRepositoryUserMemberOperation;
 
 import java.util.Collection;
 
 @Service
-public class InternalRepositoryOperation implements IInternalRepositoryOperation {
+public class RepositoryInfoOperation implements IRepositoryInfoOperation {
 
     private static final String DEFAULT_TOOLS_REPOSITORY_KEY = "Tools";
     private static final String DEFAULT_PIPELINES_REPOSITORY_KEY = "Pipelines";
 
 
-
     @Autowired
-    private IRepositoryMetadataService repositoryService;
+    private IRepositoryInfoService repositoryService;
     @Autowired
-    private IRepositoryGroupMemberService internalRepositoryGroupMemberService;
+    private IRepositoryGroupMemberService repositoryGroupMemberService;
     @Autowired
-    private IRepositoryUserMemberService internalRepositoryUserMemberService;
+    private IRepositoryUserMemberService repositoryUserMemberService;
     @Autowired
-    private IInternalRepositoryUserMemberOperation internalRepositoryUserMemberOperation;
+    private IRepositoryUserMemberOperation repositoryUserMemberOperation;
 
 
 
     @Override
-    public Collection<RepositoryMetadata> getAllRepositories() throws ServiceException {
+    public Collection<RepositoryInfo> getAllRepositories() throws ServiceException {
         return repositoryService.getAll();
     }
 
     @Override
-    public RepositoryMetadata getRepository(String repositoryName) throws ServiceException {
+    public RepositoryInfo getRepository(String repositoryName) throws ServiceException {
         return repositoryService.getById(repositoryName);
     }
 
     @Override
     @Transactional
-    public void createRepository(RepositoryMetadata repository) throws ServiceException {
+    public void createRepository(RepositoryInfo repository) throws ServiceException {
         if(repository.getRepositoryName().contains(DEFAULT_TOOLS_REPOSITORY_KEY) || repository.getRepositoryName().contains(DEFAULT_PIPELINES_REPOSITORY_KEY))
             throw new ServiceException("'" + DEFAULT_TOOLS_REPOSITORY_KEY + "' and '" + DEFAULT_PIPELINES_REPOSITORY_KEY + "' are reserved words for groupName!");
 
         repositoryService.insert(repository);
-        internalRepositoryUserMemberOperation.createMemberForOwner(repository);
+        repositoryUserMemberOperation.createMemberForOwner(repository);
     }
 
     @Override
     @Transactional
     public void deleteRepository(String repositoryName) throws ServiceException {
-        internalRepositoryUserMemberService.deleteMembersOfRepository(repositoryName);
-        internalRepositoryGroupMemberService.deleteMembersOfRepository(repositoryName);
+        repositoryUserMemberService.deleteMembersOfRepository(repositoryName);
+        repositoryGroupMemberService.deleteMembersOfRepository(repositoryName);
         repositoryService.delete(repositoryName);
     }
 
     @Override
-    public void updateRepository(RepositoryMetadata repository) throws ServiceException {
+    public void updateRepository(RepositoryInfo repository) throws ServiceException {
         repositoryService.update(repository);
     }
 
     @Override
-    public Collection<RepositoryMetadata> getRepositoriesOfUser(String userName) throws ServiceException {
+    public Collection<RepositoryInfo> getRepositoriesOfUser(String userName) throws ServiceException {
         return repositoryService.getRepositoriesOfUser(userName);
     }
 
@@ -81,11 +80,12 @@ public class InternalRepositoryOperation implements IInternalRepositoryOperation
     }
 
     @Override
-    public RepositoryMetadata createDefaultToolsRepository(User user) throws ServiceException {
-        RepositoryMetadata repository = new RepositoryMetadata();
+    public RepositoryInfo createDefaultToolsRepository(User user) throws ServiceException {
+        RepositoryInfo repository = new RepositoryInfo();
 
         repository.setRepositoryName(user.getUserName() + "_" + DEFAULT_TOOLS_REPOSITORY_KEY);
-        repository.setType(RepositoryMetadata.Type.TOOLS);
+        repository.setEntityType(RepositoryInfo.EntityType.TOOLS);
+        repository.setLocationType(RepositoryInfo.LocationType.INTERNAL);
         repository.setOwner(user);
         repository.setPublic(true);
 
@@ -95,11 +95,12 @@ public class InternalRepositoryOperation implements IInternalRepositoryOperation
     }
 
     @Override
-    public RepositoryMetadata createDefaultPipelinesRepository(User user) throws ServiceException {
-        RepositoryMetadata repository = new RepositoryMetadata();
+    public RepositoryInfo createDefaultPipelinesRepository(User user) throws ServiceException {
+        RepositoryInfo repository = new RepositoryInfo();
 
         repository.setRepositoryName(user.getUserName() + "_" + DEFAULT_PIPELINES_REPOSITORY_KEY);
-        repository.setType(RepositoryMetadata.Type.PIPELINES);
+        repository.setEntityType(RepositoryInfo.EntityType.TOOLS);
+        repository.setLocationType(RepositoryInfo.LocationType.INTERNAL);
         repository.setOwner(user);
         repository.setPublic(true);
 

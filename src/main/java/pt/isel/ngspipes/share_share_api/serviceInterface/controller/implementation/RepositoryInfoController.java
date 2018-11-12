@@ -8,68 +8,68 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pt.isel.ngspipes.share_core.logic.domain.RepositoryInfo;
 import pt.isel.ngspipes.share_core.logic.service.exceptions.ServiceException;
 import pt.isel.ngspipes.share_core.logic.service.permission.Access;
 import pt.isel.ngspipes.share_core.logic.service.permission.IPermissionService;
-import pt.isel.ngspipes.share_dynamic_repository.logic.domain.RepositoryMetadata;
-import pt.isel.ngspipes.share_share_api.logic.operation.internalRepository.IInternalRepositoryOperation;
-import pt.isel.ngspipes.share_share_api.serviceInterface.controller.facade.IInternalRepositoryController;
+import pt.isel.ngspipes.share_share_api.logic.operation.repositoryInfo.RepositoryInfoOperation;
+import pt.isel.ngspipes.share_share_api.serviceInterface.controller.facade.IRepositoryInfoController;
 
 import java.util.Collection;
 
 @RestController
-public class InternalRepositoryController implements IInternalRepositoryController {
+public class RepositoryInfoController implements IRepositoryInfoController {
 
     @Autowired
-    private IInternalRepositoryOperation internalRepositoryOperation;
+    private RepositoryInfoOperation repositoryInfoOperation;
     @Autowired
-    private IPermissionService<RepositoryMetadata, String> permissionService;
+    private IPermissionService<RepositoryInfo, String> permissionService;
 
 
 
     @Override
-    public ResponseEntity<Collection<RepositoryMetadata>> getAll() throws Exception {
+    public ResponseEntity<Collection<RepositoryInfo>> getAll() throws Exception {
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<RepositoryMetadata> repositories = internalRepositoryOperation.getAllRepositories();
+        Collection<RepositoryInfo> repositories = repositoryInfoOperation.getAllRepositories();
 
-        ControllerUtils.hidePasswordsOfRepositoriesMetadata(repositories);
+        ControllerUtils.hidePasswordsOfRepositoriesInfo(repositories);
 
         return new ResponseEntity<>(repositories, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<RepositoryMetadata> get(@PathVariable String repositoryName) throws Exception {
+    public ResponseEntity<RepositoryInfo> get(@PathVariable String repositoryName) throws Exception {
         if(!isValidAccess(repositoryName, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        RepositoryMetadata repository = internalRepositoryOperation.getRepository(repositoryName);
+        RepositoryInfo repository = repositoryInfoOperation.getRepository(repositoryName);
 
-        ControllerUtils.hidePasswordOfRepositoryMetadata(repository);
+        ControllerUtils.hidePasswordOfRepositoryInfo(repository);
 
         return new ResponseEntity<>(repository, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Void> insert(@RequestBody RepositoryMetadata repository) throws Exception {
+    public ResponseEntity<Void> insert(@RequestBody RepositoryInfo repository) throws Exception {
         if(!isValidAccess(null, Access.Operation.INSERT))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        internalRepositoryOperation.createRepository(repository);
+        repositoryInfoOperation.createRepository(repository);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<Void> update(@PathVariable String repositoryName, @RequestBody RepositoryMetadata repository) throws Exception {
+    public ResponseEntity<Void> update(@PathVariable String repositoryName, @RequestBody RepositoryInfo repository) throws Exception {
         if(!isValidAccess(repositoryName, Access.Operation.UPDATE))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
         if(!repositoryName.equals(repository.getRepositoryName()))
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        internalRepositoryOperation.updateRepository(repository);
+        repositoryInfoOperation.updateRepository(repository);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -79,19 +79,19 @@ public class InternalRepositoryController implements IInternalRepositoryControll
         if(!isValidAccess(repositoryName, Access.Operation.DELETE))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        internalRepositoryOperation.deleteRepository(repositoryName);
+        repositoryInfoOperation.deleteRepository(repositoryName);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Collection<RepositoryMetadata>> getRepositoriesOfUser(@RequestParam String userName) throws Exception {
+    public ResponseEntity<Collection<RepositoryInfo>> getRepositoriesOfUser(@RequestParam String userName) throws Exception {
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<RepositoryMetadata> repositories = internalRepositoryOperation.getRepositoriesOfUser(userName);
+        Collection<RepositoryInfo> repositories = repositoryInfoOperation.getRepositoriesOfUser(userName);
 
-        ControllerUtils.hidePasswordsOfRepositoriesMetadata(repositories);
+        ControllerUtils.hidePasswordsOfRepositoriesInfo(repositories);
 
         return new ResponseEntity<>(repositories, HttpStatus.OK);
     }
@@ -101,7 +101,7 @@ public class InternalRepositoryController implements IInternalRepositoryControll
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<String> repositoriesNames = internalRepositoryOperation.getRepositoriesNames();
+        Collection<String> repositoriesNames = repositoryInfoOperation.getRepositoriesNames();
 
         return new ResponseEntity<>(repositoriesNames, HttpStatus.OK);
     }

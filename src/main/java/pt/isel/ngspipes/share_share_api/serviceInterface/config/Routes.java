@@ -49,41 +49,31 @@ public class Routes {
     public static final String GET_ACCESS_TOKENS_OF_USER = ACCESS_TOKEN_ROUTE;
 
 
-    public static final String INTERNAL_REPOSITORIES_ROUTE = "/internalrepositories";
+    public static final String REPOSITORIES_ROUTE = "/repositories";
 
-    public static final String GET_ALL_INTERNAL_REPOSITORIES_ROUTE = INTERNAL_REPOSITORIES_ROUTE;
-    public static final String GET_INTERNAL_REPOSITORY_ROUTE = INTERNAL_REPOSITORIES_ROUTE + "/{repositoryName}";
-    public static final String CREATE_INTERNAL_REPOSITORY_ROUTE = INTERNAL_REPOSITORIES_ROUTE;
-    public static final String UPDATE_INTERNAL_REPOSITORY_ROUTE = INTERNAL_REPOSITORIES_ROUTE + "/{repositoryName}";
-    public static final String DELETE_INTERNAL_REPOSITORY_ROUTE = INTERNAL_REPOSITORIES_ROUTE + "/{repositoryName}";
-    public static final String GET_INTERNAL_REPOSITORIES_NAMES_ROUTE = "/internalrepositoriesnames";
-
-
-    public static final String INTERNAL_REPOSITORY_GROUP_MEMBERS_ROUTE = "/internalrepositorygroupmembers";
-
-    public static final String GET_ALL_INTERNAL_REPOSITORY_GROUP_MEMBERS_ROUTE = INTERNAL_REPOSITORY_GROUP_MEMBERS_ROUTE;
-    public static final String GET_INTERNAL_REPOSITORY_GROUP_MEMBER_ROUTE = INTERNAL_REPOSITORY_GROUP_MEMBERS_ROUTE + "/{memberId}";
-    public static final String CREATE_INTERNAL_REPOSITORY_GROUP_MEMBER_ROUTE = INTERNAL_REPOSITORY_GROUP_MEMBERS_ROUTE;
-    public static final String UPDATE_INTERNAL_REPOSITORY_GROUP_MEMBER_ROUTE = INTERNAL_REPOSITORY_GROUP_MEMBERS_ROUTE + "/{memberId}";
-    public static final String DELETE_INTERNAL_REPOSITORY_GROUP_MEMBER_ROUTE = INTERNAL_REPOSITORY_GROUP_MEMBERS_ROUTE + "/{memberId}";
+    public static final String GET_ALL_REPOSITORIES_ROUTE = REPOSITORIES_ROUTE;
+    public static final String GET_REPOSITORY_ROUTE = REPOSITORIES_ROUTE + "/{repositoryName}";
+    public static final String CREATE_REPOSITORY_ROUTE = REPOSITORIES_ROUTE;
+    public static final String UPDATE_REPOSITORY_ROUTE = REPOSITORIES_ROUTE + "/{repositoryName}";
+    public static final String DELETE_REPOSITORY_ROUTE = REPOSITORIES_ROUTE + "/{repositoryName}";
+    public static final String GET_REPOSITORIES_NAMES_ROUTE = "/repositoriesnames";
 
 
-    public static final String INTERNAL_REPOSITORY_USER_MEMBERS_ROUTE = "/internalrepositoryusermembers";
+    public static final String REPOSITORY_GROUP_MEMBERS_ROUTE = "/repositorygroupmembers";
 
-    public static final String GET_ALL_INTERNAL_REPOSITORY_USER_MEMBERS_ROUTE = INTERNAL_REPOSITORY_USER_MEMBERS_ROUTE;
-    public static final String GET_INTERNAL_REPOSITORY_USER_MEMBER_ROUTE = INTERNAL_REPOSITORY_USER_MEMBERS_ROUTE + "/{memberId}";
-    public static final String CREATE_INTERNAL_REPOSITORY_USER_MEMBER_ROUTE = INTERNAL_REPOSITORY_USER_MEMBERS_ROUTE;
-    public static final String UPDATE_INTERNAL_REPOSITORY_USER_MEMBER_ROUTE = INTERNAL_REPOSITORY_USER_MEMBERS_ROUTE + "/{memberId}";
-    public static final String DELETE_INTERNAL_REPOSITORY_USER_MEMBER_ROUTE = INTERNAL_REPOSITORY_USER_MEMBERS_ROUTE + "/{memberId}";
+    public static final String GET_ALL_REPOSITORY_GROUP_MEMBERS_ROUTE = REPOSITORY_GROUP_MEMBERS_ROUTE;
+    public static final String GET_REPOSITORY_GROUP_MEMBER_ROUTE = REPOSITORY_GROUP_MEMBERS_ROUTE + "/{memberId}";
+    public static final String CREATE_REPOSITORY_GROUP_MEMBER_ROUTE = REPOSITORY_GROUP_MEMBERS_ROUTE;
+    public static final String UPDATE_REPOSITORY_GROUP_MEMBER_ROUTE = REPOSITORY_GROUP_MEMBERS_ROUTE + "/{memberId}";
+    public static final String DELETE_REPOSITORY_GROUP_MEMBER_ROUTE = REPOSITORY_GROUP_MEMBERS_ROUTE + "/{memberId}";
 
 
-    public static final String EXTERNAL_REPOSITORIES_ROUTE = "/externalrepositories";
+    public static final String REPOSITORY_USER_MEMBERS_ROUTE = "/repositoryusermembers";
 
-    public static final String GET_ALL_EXTERNAL_REPOSITORIES_ROUTE = EXTERNAL_REPOSITORIES_ROUTE;
-    public static final String GET_EXTERNAL_REPOSITORY_ROUTE = EXTERNAL_REPOSITORIES_ROUTE + "/{repositoryName}";
-    public static final String CREATE_EXTERNAL_REPOSITORY_ROUTE = EXTERNAL_REPOSITORIES_ROUTE;
-    public static final String UPDATE_EXTERNAL_REPOSITORY_ROUTE = EXTERNAL_REPOSITORIES_ROUTE + "/{repositoryName}";
-    public static final String DELETE_EXTERNAL_REPOSITORY_ROUTE = EXTERNAL_REPOSITORIES_ROUTE + "/{repositoryName}";
-    public static final String GET_EXTERNAL_REPOSITORIES_NAMES_ROUTE = "/externalrepositoriesnames";
+    public static final String GET_ALL_REPOSITORY_USER_MEMBERS_ROUTE = REPOSITORY_USER_MEMBERS_ROUTE;
+    public static final String GET_REPOSITORY_USER_MEMBER_ROUTE = REPOSITORY_USER_MEMBERS_ROUTE + "/{memberId}";
+    public static final String CREATE_REPOSITORY_USER_MEMBER_ROUTE = REPOSITORY_USER_MEMBERS_ROUTE;
+    public static final String UPDATE_REPOSITORY_USER_MEMBER_ROUTE = REPOSITORY_USER_MEMBERS_ROUTE + "/{memberId}";
+    public static final String DELETE_REPOSITORY_USER_MEMBER_ROUTE = REPOSITORY_USER_MEMBERS_ROUTE + "/{memberId}";
 
 }

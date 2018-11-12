@@ -8,20 +8,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pt.isel.ngspipes.share_core.logic.domain.RepositoryGroupMember;
 import pt.isel.ngspipes.share_core.logic.service.exceptions.ServiceException;
 import pt.isel.ngspipes.share_core.logic.service.permission.Access;
 import pt.isel.ngspipes.share_core.logic.service.permission.IPermissionService;
-import pt.isel.ngspipes.share_dynamic_repository.logic.domain.RepositoryGroupMember;
-import pt.isel.ngspipes.share_share_api.logic.operation.internalRepositoryGroupMember.IInternalRepositoryGroupMemberOperation;
-import pt.isel.ngspipes.share_share_api.serviceInterface.controller.facade.IInternalRepositoryGroupMemberController;
+import pt.isel.ngspipes.share_share_api.logic.operation.repositoryGroupMember.IRepositoryGroupMemberOperation;
+import pt.isel.ngspipes.share_share_api.serviceInterface.controller.facade.IRepositoryGroupMemberController;
 
 import java.util.Collection;
 
 @RestController
-public class InternalRepositoryGroupMemberController implements IInternalRepositoryGroupMemberController {
+public class RepositoryGroupMemberController implements IRepositoryGroupMemberController {
 
     @Autowired
-    private IInternalRepositoryGroupMemberOperation internalRepositoryGroupMemberOperation;
+    private IRepositoryGroupMemberOperation repositoryGroupMemberOperation;
     @Autowired
     private IPermissionService<RepositoryGroupMember, Integer> permissionService;
 
@@ -32,7 +32,7 @@ public class InternalRepositoryGroupMemberController implements IInternalReposit
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<RepositoryGroupMember> members = internalRepositoryGroupMemberOperation.getAllMembers();
+        Collection<RepositoryGroupMember> members = repositoryGroupMemberOperation.getAllMembers();
 
         ControllerUtils.hidePasswordsOfRepositoryGroupMembers(members);
 
@@ -44,7 +44,7 @@ public class InternalRepositoryGroupMemberController implements IInternalReposit
         if(!isValidAccess(memberId, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        RepositoryGroupMember member = internalRepositoryGroupMemberOperation.getMember(memberId);
+        RepositoryGroupMember member = repositoryGroupMemberOperation.getMember(memberId);
 
         ControllerUtils.hidePasswordOfRepositoryGroupMember(member);
 
@@ -56,7 +56,7 @@ public class InternalRepositoryGroupMemberController implements IInternalReposit
         if(!isValidAccess(null, Access.Operation.INSERT))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        internalRepositoryGroupMemberOperation.createMember(member);
+        repositoryGroupMemberOperation.createMember(member);
 
         return new ResponseEntity<>(member.getId(), HttpStatus.CREATED);
     }
@@ -69,7 +69,7 @@ public class InternalRepositoryGroupMemberController implements IInternalReposit
         if(!memberId.equals(member.getId()))
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        internalRepositoryGroupMemberOperation.updateMember(member);
+        repositoryGroupMemberOperation.updateMember(member);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -79,7 +79,7 @@ public class InternalRepositoryGroupMemberController implements IInternalReposit
         if(!isValidAccess(memberId, Access.Operation.DELETE))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        internalRepositoryGroupMemberOperation.deleteMember(memberId);
+        repositoryGroupMemberOperation.deleteMember(memberId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -89,7 +89,7 @@ public class InternalRepositoryGroupMemberController implements IInternalReposit
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<RepositoryGroupMember> members = internalRepositoryGroupMemberOperation.getMembersOfRepository(repositoryName);
+        Collection<RepositoryGroupMember> members = repositoryGroupMemberOperation.getMembersOfRepository(repositoryName);
 
         ControllerUtils.hidePasswordsOfRepositoryGroupMembers(members);
 
@@ -101,7 +101,7 @@ public class InternalRepositoryGroupMemberController implements IInternalReposit
         if(!isValidAccess(null, Access.Operation.GET))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        Collection<RepositoryGroupMember> members = internalRepositoryGroupMemberOperation.getMembersWithGroup(groupName);
+        Collection<RepositoryGroupMember> members = repositoryGroupMemberOperation.getMembersWithGroup(groupName);
 
         ControllerUtils.hidePasswordsOfRepositoryGroupMembers(members);
 

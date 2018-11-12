@@ -14,11 +14,10 @@ import pt.isel.ngspipes.share_core.logic.domain.User;
 import pt.isel.ngspipes.share_core.logic.service.accessToken.IAccessTokenService;
 import pt.isel.ngspipes.share_core.logic.service.exceptions.ServiceException;
 import pt.isel.ngspipes.share_core.logic.service.groupMember.IGroupMemberService;
+import pt.isel.ngspipes.share_core.logic.service.repositoryUserMember.IRepositoryUserMemberService;
 import pt.isel.ngspipes.share_core.logic.service.user.IUserService;
-import pt.isel.ngspipes.share_dynamic_repository.logic.service.repositoryUserMember.IRepositoryUserMemberService;
-import pt.isel.ngspipes.share_share_api.logic.operation.externalRepository.IExternalRepositoryOperation;
 import pt.isel.ngspipes.share_share_api.logic.operation.group.IGroupOperation;
-import pt.isel.ngspipes.share_share_api.logic.operation.internalRepository.IInternalRepositoryOperation;
+import pt.isel.ngspipes.share_share_api.logic.operation.repositoryInfo.IRepositoryInfoOperation;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -36,11 +35,9 @@ public class UserOperation implements IUserOperation{
     @Autowired
     private IGroupMemberService groupMemberService;
     @Autowired
-    private IInternalRepositoryOperation internalRepositoryOperation;
+    private IRepositoryInfoOperation repositoryInfoOperation;
     @Autowired
-    private IExternalRepositoryOperation externalRepositoryOperation;
-    @Autowired
-    private IRepositoryUserMemberService internalRepositoryUserMemberService;
+    private IRepositoryUserMemberService repositoryUserMemberService;
 
 
 
@@ -61,8 +58,8 @@ public class UserOperation implements IUserOperation{
 
         setCurrentUserContext(user);
 
-        internalRepositoryOperation.createDefaultToolsRepository(user);
-        internalRepositoryOperation.createDefaultPipelinesRepository(user);
+        repositoryInfoOperation.createDefaultToolsRepository(user);
+        repositoryInfoOperation.createDefaultPipelinesRepository(user);
     }
 
     private void setCurrentUserContext(User user) {
@@ -80,12 +77,12 @@ public class UserOperation implements IUserOperation{
     public void deleteUser(String userName) throws ServiceException {
         tokenService.deleteTokensOfUser(userName);
         groupMemberService.deleteMembersWithUser(userName);
-        externalRepositoryOperation.deleteRepositoriesOfUser(userName);
-        internalRepositoryOperation.deleteRepositoriesOfUser(userName);
-        internalRepositoryUserMemberService.deleteMembersWithUser(userName);
+        repositoryUserMemberService.deleteMembersWithUser(userName);
 
         for(Group group : groupOperation.getGroupsOfUser(userName))
             groupOperation.deleteGroup(group.getGroupName());
+
+        repositoryInfoOperation.deleteRepositoriesOfUser(userName);
 
         userService.delete(userName);
     }

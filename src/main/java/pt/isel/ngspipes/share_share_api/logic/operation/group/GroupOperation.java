@@ -10,7 +10,7 @@ import pt.isel.ngspipes.share_core.logic.domain.Image;
 import pt.isel.ngspipes.share_core.logic.service.exceptions.ServiceException;
 import pt.isel.ngspipes.share_core.logic.service.group.IGroupService;
 import pt.isel.ngspipes.share_core.logic.service.groupMember.IGroupMemberService;
-import pt.isel.ngspipes.share_dynamic_repository.logic.service.repositoryGroupMember.IRepositoryGroupMemberService;
+import pt.isel.ngspipes.share_core.logic.service.repositoryGroupMember.IRepositoryGroupMemberService;
 import pt.isel.ngspipes.share_share_api.logic.operation.groupMember.IGroupMemberOperation;
 
 import java.util.Collection;
@@ -23,7 +23,7 @@ public class GroupOperation implements IGroupOperation {
     @Autowired
     private IGroupService groupService;
     @Autowired
-    private IRepositoryGroupMemberService internalRepositoryGroupMemberService;
+    private IRepositoryGroupMemberService repositoryGroupMemberService;
     @Autowired
     private IGroupMemberService groupMemberService;
     @Autowired
@@ -51,7 +51,7 @@ public class GroupOperation implements IGroupOperation {
     @Override
     @Transactional
     public void deleteGroup(String groupName) throws ServiceException {
-        internalRepositoryGroupMemberService.deleteMembersWithGroup(groupName);
+        repositoryGroupMemberService.deleteMembersWithGroup(groupName);
         groupMemberService.deleteMembersOfGroup(groupName);
         groupService.delete(groupName);
     }

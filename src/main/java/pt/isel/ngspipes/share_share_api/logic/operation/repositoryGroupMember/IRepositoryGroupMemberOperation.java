@@ -1,11 +1,11 @@
-package pt.isel.ngspipes.share_share_api.logic.operation.internalRepositoryGroupMember;
+package pt.isel.ngspipes.share_share_api.logic.operation.repositoryGroupMember;
 
+import pt.isel.ngspipes.share_core.logic.domain.RepositoryGroupMember;
 import pt.isel.ngspipes.share_core.logic.service.exceptions.ServiceException;
-import pt.isel.ngspipes.share_dynamic_repository.logic.domain.RepositoryGroupMember;
 
 import java.util.Collection;
 
-public interface IInternalRepositoryGroupMemberOperation {
+public interface IRepositoryGroupMemberOperation {
 
     Collection<RepositoryGroupMember> getAllMembers() throws ServiceException;
 
