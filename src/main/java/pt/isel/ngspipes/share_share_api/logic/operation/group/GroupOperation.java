@@ -89,33 +89,10 @@ public class GroupOperation implements IGroupOperation {
     @Override
     @Transactional
     public Collection<Group> getGroupsAccessibleByUser(String userName) throws ServiceException {
-        Collection<Group> groups = new LinkedList<>();
-
-        Collection<Group> ownerOf = groupService.getGroupsOfUser(userName);
-        Collection<Group> memberOf = groupMemberService.getMembersWithUser(userName)
-                .stream()
-                .map(GroupMember::getGroup)
-                .collect(Collectors.toList());
-
-        groups.addAll(ownerOf);
-        groups.addAll(memberOf);
-
-        return removeDuplicates(groups);
-    }
-
-    private Collection<Group> removeDuplicates(Collection<Group> groups) {
-        Collection<String> seen = new LinkedList<>();
-
-        return groups
-                .stream()
-                .filter((group) -> {
-                    if(seen.contains(group.getGroupName()))
-                        return false;
-
-                    seen.add(group.getGroupName());
-                    return true;
-                })
-                .collect(Collectors.toList());
+        return groupMemberService.getMembersWithUser(userName)
+            .stream()
+            .map(GroupMember::getGroup)
+            .collect(Collectors.toList());
     }
 
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pt.isel.ngspipes.share_core.logic.domain.Group;
 import pt.isel.ngspipes.share_core.logic.domain.RepositoryInfo;
 import pt.isel.ngspipes.share_core.logic.service.exceptions.ServiceException;
 import pt.isel.ngspipes.share_core.logic.service.permission.Access;
@@ -104,6 +105,18 @@ public class RepositoryInfoController implements IRepositoryInfoController {
         Collection<String> repositoriesNames = repositoryInfoOperation.getRepositoriesNames();
 
         return new ResponseEntity<>(repositoriesNames, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Collection<RepositoryInfo>> getRepositoriesAccessibleByUser(@RequestParam String accessibleBy) throws Exception {
+        if(!isValidAccess(null, Access.Operation.GET))
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
+        Collection<RepositoryInfo> repositories = repositoryInfoOperation.getRepositoriesAccessibleByUser(accessibleBy);
+
+        ControllerUtils.hidePasswordsOfRepositoriesInfo(repositories);
+
+        return new ResponseEntity<>(repositories, HttpStatus.OK);
     }
 
     private boolean isValidAccess(String repositoryName, Access.Operation operation) throws ServiceException {

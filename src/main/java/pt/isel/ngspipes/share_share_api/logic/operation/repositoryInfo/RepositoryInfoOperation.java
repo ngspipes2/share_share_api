@@ -3,15 +3,17 @@ package pt.isel.ngspipes.share_share_api.logic.operation.repositoryInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pt.isel.ngspipes.share_core.logic.domain.RepositoryInfo;
-import pt.isel.ngspipes.share_core.logic.domain.User;
+import pt.isel.ngspipes.share_core.logic.domain.*;
 import pt.isel.ngspipes.share_core.logic.service.exceptions.ServiceException;
 import pt.isel.ngspipes.share_core.logic.service.repositoryGroupMember.IRepositoryGroupMemberService;
 import pt.isel.ngspipes.share_core.logic.service.repositoryInfo.IRepositoryInfoService;
 import pt.isel.ngspipes.share_core.logic.service.repositoryUserMember.IRepositoryUserMemberService;
+import pt.isel.ngspipes.share_share_api.logic.operation.group.IGroupOperation;
 import pt.isel.ngspipes.share_share_api.logic.operation.repositoryUserMember.IRepositoryUserMemberOperation;
 
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 @Service
 public class RepositoryInfoOperation implements IRepositoryInfoOperation {
@@ -22,6 +24,8 @@ public class RepositoryInfoOperation implements IRepositoryInfoOperation {
 
     @Autowired
     private IRepositoryInfoService repositoryService;
+    @Autowired
+    private IGroupOperation groupOperation;
     @Autowired
     private IRepositoryGroupMemberService repositoryGroupMemberService;
     @Autowired
@@ -107,6 +111,48 @@ public class RepositoryInfoOperation implements IRepositoryInfoOperation {
         repositoryService.insert(repository);
 
         return repository;
+    }
+
+    @Override
+    public Collection<RepositoryInfo> getRepositoriesAccessibleByUser(String userName) throws ServiceException {
+        Collection<RepositoryInfo> repositories = new LinkedList<>();
+
+        repositories.addAll(
+            this.repositoryUserMemberOperation.getMembersWithUser(userName)
+            .stream()
+            .map(RepositoryUserMember::getRepository)
+            .collect(Collectors.toList())
+        );
+
+        Collection<String> groupsAccessibleByUser = this.groupOperation.getGroupsAccessibleByUser(userName)
+            .stream()
+            .map(Group::getGroupName)
+            .collect(Collectors.toList());
+
+        for(String groupName : groupsAccessibleByUser)
+            repositories.addAll(
+                this.repositoryGroupMemberService.getMembersWithGroup(groupName)
+                .stream()
+                .map(RepositoryGroupMember::getRepository)
+                .collect(Collectors.toList())
+            );
+
+        return removeDuplicates(repositories);
+    }
+
+    private Collection<RepositoryInfo> removeDuplicates(Collection<RepositoryInfo> repositories) {
+        Collection<String> seen = new LinkedList<>();
+
+        return repositories
+                .stream()
+                .filter((repository) -> {
+                    if(seen.contains(repository.getRepositoryName()))
+                        return false;
+
+                    seen.add(repository.getRepositoryName());
+                    return true;
+                })
+                .collect(Collectors.toList());
     }
 
 }

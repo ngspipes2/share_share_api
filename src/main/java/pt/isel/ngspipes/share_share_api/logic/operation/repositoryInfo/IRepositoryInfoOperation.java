@@ -28,4 +28,6 @@ public interface IRepositoryInfoOperation {
 
     RepositoryInfo createDefaultPipelinesRepository(User user) throws ServiceException;
 
+    Collection<RepositoryInfo> getRepositoriesAccessibleByUser(String userName) throws ServiceException;
+
 }
