@@ -93,7 +93,8 @@ public class RepositoryInfoOperation implements IRepositoryInfoOperation {
         repository.setOwner(user);
         repository.setPublic(true);
 
-        this.createRepository(repository);
+        repositoryService.insert(repository);
+        repositoryUserMemberOperation.createMemberForOwner(repository);
 
         return repository;
     }
@@ -108,7 +109,8 @@ public class RepositoryInfoOperation implements IRepositoryInfoOperation {
         repository.setOwner(user);
         repository.setPublic(true);
 
-        this.createRepository(repository);
+        repositoryService.insert(repository);
+        repositoryUserMemberOperation.createMemberForOwner(repository);
 
         return repository;
     }
