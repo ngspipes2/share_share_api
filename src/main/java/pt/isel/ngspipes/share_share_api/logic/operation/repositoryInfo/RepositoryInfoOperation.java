@@ -104,7 +104,7 @@ public class RepositoryInfoOperation implements IRepositoryInfoOperation {
         RepositoryInfo repository = new RepositoryInfo();
 
         repository.setRepositoryName(user.getUserName() + "_" + DEFAULT_PIPELINES_REPOSITORY_KEY);
-        repository.setEntityType(RepositoryInfo.EntityType.TOOLS);
+        repository.setEntityType(RepositoryInfo.EntityType.PIPELINES);
         repository.setLocationType(RepositoryInfo.LocationType.INTERNAL);
         repository.setOwner(user);
         repository.setPublic(true);
