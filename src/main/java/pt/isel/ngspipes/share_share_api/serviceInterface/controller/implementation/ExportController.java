@@ -1,5 +1,6 @@
 package pt.isel.ngspipes.share_share_api.serviceInterface.controller.implementation;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -17,9 +18,6 @@ import pt.isel.ngspipes.tool_descriptor.interfaces.IToolDescriptor;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collection;
 
 @RestController
@@ -40,14 +38,14 @@ public class ExportController implements IExportController {
         exportOperation.exportTools(tools, format, resultPath);
 
         File file = new File(resultPath);
-        Path path = Paths.get(file.getAbsolutePath());
 
-        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
+        ByteArrayResource resource = new ByteArrayResource(FileUtils.readFileToByteArray(file));
+        long fileSize = file.length();
 
         file.delete();
 
         return ResponseEntity.ok()
-                .contentLength(file.length())
+                .contentLength(fileSize)
                 .contentType(MediaType.parseMediaType("application/octet-stream"))
                 .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION)
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName.replace(" ", "_"))
@@ -64,14 +62,14 @@ public class ExportController implements IExportController {
         exportOperation.exportPipelines(pipelines, format, resultPath);
 
         File file = new File(resultPath);
-        Path path = Paths.get(file.getAbsolutePath());
 
-        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
+        ByteArrayResource resource = new ByteArrayResource(FileUtils.readFileToByteArray(file));
+        long fileSize = file.length();
 
         file.delete();
 
         return ResponseEntity.ok()
-                .contentLength(file.length())
+                .contentLength(fileSize)
                 .contentType(MediaType.parseMediaType("application/octet-stream"))
                 .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION)
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName.replace(" ", "_"))
