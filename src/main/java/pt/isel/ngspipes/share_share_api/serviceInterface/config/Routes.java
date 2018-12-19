@@ -76,4 +76,19 @@ public class Routes {
     public static final String UPDATE_REPOSITORY_USER_MEMBER_ROUTE = REPOSITORY_USER_MEMBERS_ROUTE + "/{memberId}";
     public static final String DELETE_REPOSITORY_USER_MEMBER_ROUTE = REPOSITORY_USER_MEMBERS_ROUTE + "/{memberId}";
 
+    public static final String IMPORT_ROUTE = "/import";
+
+    public static final String IMPORT_TOOLS_ROUTE = IMPORT_ROUTE + "/tools";
+    public static final String IMPORT_PIPELINES_ROUTE = IMPORT_ROUTE + "/pipelines";
+
+
+    public static final String EXPORT_ROUTE = "/export";
+
+    public static final String EXPORT_TOOLS_ROUTE = EXPORT_ROUTE + "/tools";
+    public static final String EXPORT_PIPELINES_ROUTE = EXPORT_ROUTE + "/pipelines";
+
+
+
+
+
 }

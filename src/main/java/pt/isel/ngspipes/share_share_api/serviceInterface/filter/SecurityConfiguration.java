@@ -92,6 +92,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers(Routes.UPDATE_REPOSITORY_USER_MEMBER_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
             .antMatchers(Routes.DELETE_REPOSITORY_USER_MEMBER_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
 
+            .antMatchers(Routes.IMPORT_TOOLS_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
+            .antMatchers(Routes.IMPORT_PIPELINES_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
+
+            .antMatchers(Routes.EXPORT_TOOLS_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
+            .antMatchers(Routes.EXPORT_PIPELINES_ROUTE).hasAnyRole(User.Role.NORMAL.toString(), User.Role.ADMIN.toString())
+
             .and().httpBasic()
             .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
