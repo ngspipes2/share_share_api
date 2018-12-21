@@ -32,7 +32,7 @@ public class ImportController implements IImportController {
 
         try {
             FileUtils.copyInputStreamToFile(file.getInputStream(), new File(filePath));
-            return importOperation.importTools(fileName);
+            return importOperation.importTools(filePath);
         } finally {
             IOUtils.deleteFolder(tempDir);
         }
