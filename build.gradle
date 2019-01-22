@@ -1,9 +1,7 @@
-plugins {
-    id 'java'
-}
-
 group 'pt.isel.ngspipes'
 version '1.0'
+
+apply plugin: 'war'
 
 sourceCompatibility = 1.8
 
@@ -38,7 +36,7 @@ dependencies {
 }
 
 
-jar {
+war {
     manifest {
         attributes "Main-Class": "pt.isel.ngspipes.share_share_api.App"
     }
