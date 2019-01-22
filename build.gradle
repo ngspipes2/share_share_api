@@ -1,6 +1,7 @@
 group 'pt.isel.ngspipes'
 version '1.0'
 
+apply plugin: 'java'
 apply plugin: 'war'
 
 sourceCompatibility = 1.8
@@ -35,14 +36,17 @@ dependencies {
     compile project(":share_core")
 }
 
-
-war {
+jar {
     manifest {
         attributes "Main-Class": "pt.isel.ngspipes.share_share_api.App"
     }
 
-    from {
-        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    baseName 'ShareAPI'
+}
+
+war {
+    manifest {
+        attributes "Main-Class": "pt.isel.ngspipes.share_share_api.App"
     }
 
     baseName 'ShareAPI'
