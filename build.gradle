@@ -47,12 +47,3 @@ jar {
 
     baseName 'ShareAPI'
 }
-
-war {
-    manifest {
-        attributes "Main-Class": "pt.isel.ngspipes.share_share_api.App"
-    }
-
-    baseName 'ShareAPI'
-}
-
